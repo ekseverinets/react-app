@@ -1,0 +1,14 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 6.4vw;
+  background-color: #25626c;
+}
+
+@media (min-width: 768px) {
+  .header {
+    padding: 20px 80px;
+  }
+}
