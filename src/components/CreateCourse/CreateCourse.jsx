@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 
 import { getCourseDuration, UUID } from '../../helpers';
 
-//import styles from './CreateCourse.module.css';
+// TODO: Import styles from './CreateCourse.module.css';
 
 import InputField from '../../common/InputField/InputField';
 
@@ -55,13 +55,13 @@ const CreateCourse = ({ updateCourse }) => {
 
 	const validateForm = () => {
 		let isInvalid = false;
-		Object.keys(error).forEach((x) => {
-			const errObj = error[x];
+		Object.keys(error).forEach((errorItem) => {
+			const errObj = error[errorItem];
 			if (errObj.errorMsg) {
 				isInvalid = true;
-			} else if (errObj.isReq && !form[x]) {
+			} else if (errObj.isReq && !form[errorItem]) {
 				isInvalid = true;
-				onInputValidate(true, x);
+				onInputValidate(true, errorItem);
 			}
 		});
 		return !isInvalid;
@@ -105,7 +105,7 @@ const CreateCourse = ({ updateCourse }) => {
 		<div className='form'>
 			<InputField
 				type='text'
-				name={12345}
+				name='courseTitle'
 				title='Title'
 				value={form.courseTitle}
 				min={2}
@@ -146,7 +146,7 @@ const CreateCourse = ({ updateCourse }) => {
 					<h2>Authors</h2>
 					<ul>
 						{authors
-							.filter((author) => !courseAuthors.includes(author))
+							.filter((author) => !new Set(courseAuthors).has(author))
 							.map((author) => (
 								<li key={author.id}>
 									<AuthorItem
@@ -170,7 +170,7 @@ const CreateCourse = ({ updateCourse }) => {
 									authorName={courseAutor.name}
 									handleAuthor={() => {
 										setCourseAuthors((prevState) =>
-											prevState.filter((itemId) => itemId !== courseAutor.id)
+											prevState.filter((item) => item.id !== courseAutor.id)
 										);
 									}}
 									btnText={'delete'}

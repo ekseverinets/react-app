@@ -1,7 +1,7 @@
-export const getCourseAuthor = (dataArray, authorsArray) => {
-	return dataArray.map((item) => {
-		return authorsArray.filter((author) => {
-			return item.includes(author.id);
-		});
+export const getCourseAuthor = (authorsIds, authors) => {
+	const authorsResult = authors.filter(({ id }) => {
+		return authorsIds.some((authorId) => authorId === id);
 	});
+
+	return authorsResult.map(({ name }) => name).join(', ');
 };

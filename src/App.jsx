@@ -8,7 +8,7 @@ import { Header, Courses, CreateCourse } from './components';
 
 import { Button } from './common/Button/Button';
 
-function App() {
+const App = () => {
 	const BUTTON_TEXT = 'Add new course';
 	const [showCreateCourse, setCreateCourse] = useState(false);
 	const [courses, updateCourse] = useState(mockedCoursesList);
@@ -29,6 +29,6 @@ function App() {
 			{!showCreateCourse && <Courses courses={courses} />}
 		</>
 	);
-}
+};
 
 export default App;

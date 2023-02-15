@@ -4,7 +4,7 @@ import styles from './Courses.module.css';
 
 import { CourseCard } from './components/CourseCard/CourseCard';
 
-function Courses({ courses }) {
+const Courses = ({ courses }) => {
 	return (
 		<section>
 			<div className={styles.searchBarWrap}>
@@ -17,6 +17,6 @@ function Courses({ courses }) {
 			</ul>
 		</section>
 	);
-}
+};
 
 export default Courses;

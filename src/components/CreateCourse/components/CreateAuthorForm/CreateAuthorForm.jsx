@@ -4,7 +4,6 @@ import { Button } from '../../../../common/Button/Button';
 
 export const CreateAuthorForm = ({ onAddAuthor }) => {
 	const [author, setAuthor] = useState('');
-	const BUTTON_TEXT = 'Create author';
 
 	return (
 		<>
@@ -15,7 +14,7 @@ export const CreateAuthorForm = ({ onAddAuthor }) => {
 			/>
 
 			<Button
-				text={BUTTON_TEXT}
+				text='Create author'
 				onClick={() => {
 					setAuthor('');
 					onAddAuthor(author);

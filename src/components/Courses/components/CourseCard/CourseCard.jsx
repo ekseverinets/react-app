@@ -17,9 +17,7 @@ export const CourseCard = ({
 }) => {
 	const BUTTON_TEXT = 'Show course';
 	const AUTHORS_LIST = mockedAuthorsList;
-	const courseAuthors = [].concat.apply(
-		...getCourseAuthor(authors, AUTHORS_LIST)
-	);
+	const courseAuthors = getCourseAuthor(authors, AUTHORS_LIST);
 	const creationDateFormatted = creationDate.replace(/[/]/g, '.');
 
 	return (
@@ -32,12 +30,7 @@ export const CourseCard = ({
 				<p>
 					<span>
 						Authors:
-						{courseAuthors.map((author, index) => (
-							<span key={author.id}>
-								{' ' + author.name}
-								{index < courseAuthors.length - 1 && ','}
-							</span>
-						))}
+						{courseAuthors}
 					</span>
 				</p>
 				<p>
