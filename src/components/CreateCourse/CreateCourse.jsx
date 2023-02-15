@@ -9,7 +9,7 @@ import InputField from '../../common/InputField/InputField';
 import { AuthorItem } from './components/AuthorItem/AuthorItem';
 import { CreateAuthorForm } from './components/CreateAuthorForm/CreateAuthorForm';
 
-import { mockedAuthorsList } from '../../constants';
+import { MOCKED_AUTHORS_LIST } from '../../constants';
 
 const CreateCourse = ({ updateCourse }) => {
 	const [form, setForm] = useState({
@@ -19,7 +19,7 @@ const CreateCourse = ({ updateCourse }) => {
 	});
 
 	const [courseAuthors, setCourseAuthors] = useState([]);
-	const [authors, addAuthor] = useState(mockedAuthorsList);
+	const [authors, addAuthor] = useState(MOCKED_AUTHORS_LIST);
 
 	const onInputValidate = (value, name) => {
 		setError((prev) => ({
@@ -154,7 +154,7 @@ const CreateCourse = ({ updateCourse }) => {
 										handleAuthor={() => {
 											setCourseAuthors((prevState) => [...prevState, author]);
 										}}
-										btnText={'Add author'}
+										btnText='Add author'
 									/>
 								</li>
 							))}
@@ -164,16 +164,16 @@ const CreateCourse = ({ updateCourse }) => {
 					<h2>Course Authors</h2>
 					<ul>
 						{courseAuthors.length === 0 && 'Author list is empty'}
-						{courseAuthors.map((courseAutor) => (
-							<li key={courseAutor.id}>
+						{courseAuthors.map((courseAuthor) => (
+							<li key={courseAuthor.id}>
 								<AuthorItem
-									authorName={courseAutor.name}
+									authorName={courseAuthor.name}
 									handleAuthor={() => {
 										setCourseAuthors((prevState) =>
-											prevState.filter((item) => item.id !== courseAutor.id)
+											prevState.filter((item) => item.id !== courseAuthor.id)
 										);
 									}}
-									btnText={'delete'}
+									btnText='delete'
 								/>
 							</li>
 						))}

@@ -29,7 +29,7 @@ export const mockedCoursesList = [
 	},
 ];
 
-export const mockedAuthorsList = [
+export const MOCKED_AUTHORS_LIST = [
 	{
 		id: '27cc3006-e93a-4748-8ca8-73d06aa93b6d',
 		name: 'Vasiliy Dobkin',
