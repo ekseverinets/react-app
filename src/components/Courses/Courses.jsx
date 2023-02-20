@@ -4,7 +4,7 @@ import styles from './Courses.module.css';
 
 import { CourseCard } from './components/CourseCard/CourseCard';
 
-const Courses = ({ courses }) => {
+const Courses = ({ courses, updatedAuthors }) => {
 	return (
 		<section>
 			<div className={styles.searchBarWrap}>
@@ -12,7 +12,11 @@ const Courses = ({ courses }) => {
 			</div>
 			<ul className={styles.coursesList}>
 				{courses.map((course) => (
-					<CourseCard key={course.id} {...course} />
+					<CourseCard
+						key={course.id}
+						{...course}
+						updatedAuthors={updatedAuthors}
+					/>
 				))}
 			</ul>
 		</section>

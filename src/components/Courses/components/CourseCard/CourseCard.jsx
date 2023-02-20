@@ -4,8 +4,6 @@ import styles from './CourseCard.module.css';
 
 import { getCourseDuration, getCourseAuthor } from '../../../../helpers';
 
-import { MOCKED_AUTHORS_LIST } from '../../../../constants';
-
 import { Button } from '../../../../common/Button/Button';
 
 export const CourseCard = ({
@@ -14,8 +12,9 @@ export const CourseCard = ({
 	duration,
 	creationDate,
 	authors,
+	updatedAuthors,
 }) => {
-	const courseAuthors = getCourseAuthor(authors, MOCKED_AUTHORS_LIST);
+	const courseAuthors = getCourseAuthor(authors, updatedAuthors);
 	const creationDateFormatted = creationDate.replace(/[/]/g, '.');
 
 	return (

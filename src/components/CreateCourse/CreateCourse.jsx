@@ -11,7 +11,7 @@ import { CreateAuthorForm } from './components/CreateAuthorForm/CreateAuthorForm
 
 import { MOCKED_AUTHORS_LIST } from '../../constants';
 
-const CreateCourse = ({ updateCourse }) => {
+const CreateCourse = ({ updateCourse, updatedAuthors, updateAuthors }) => {
 	const [form, setForm] = useState({
 		courseTitle: '',
 		courseDesc: '',
@@ -20,7 +20,6 @@ const CreateCourse = ({ updateCourse }) => {
 
 	const [courseAuthors, setCourseAuthors] = useState([]);
 	const [authors, addAuthor] = useState(MOCKED_AUTHORS_LIST);
-
 	const onInputValidate = (value, name) => {
 		setError((prev) => ({
 			...prev,
@@ -99,6 +98,7 @@ const CreateCourse = ({ updateCourse }) => {
 		};
 
 		addAuthor((prevState) => [...prevState, newAuthor]);
+		updateAuthors(newAuthor);
 	};
 
 	return (
@@ -145,7 +145,7 @@ const CreateCourse = ({ updateCourse }) => {
 				<div>
 					<h2>Authors</h2>
 					<ul>
-						{authors
+						{updatedAuthors
 							.filter((author) => !new Set(courseAuthors).has(author))
 							.map((author) => (
 								<li key={author.id}>
