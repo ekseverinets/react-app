@@ -1,0 +1,20 @@
+.coursesList {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0 80px;
+  list-style: none;
+}
+
+section button {
+  margin-top: 15px;
+  border: 1px solid #25626c;
+  color: #25626c;
+}
+
+section button:hover,
+section button:active {
+  background: #25626c;
+  border: 1px solid #25626c;
+  color: #fff;
+}

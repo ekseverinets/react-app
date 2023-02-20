@@ -1,0 +1,36 @@
+.card {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #444;
+  border-bottom: 1px solid #d3e4e7;
+}
+
+.card .desc {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 100px 30px 0;
+}
+
+.card .details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 250px;
+}
+
+.card .details p {
+  margin: 5px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card .details span {
+  font-weight: bold;
+}
+
+.card button {
+  margin-top: 15px;
+}
