@@ -97,7 +97,7 @@ const CreateCourse = ({ updateCourse, updatedAuthors, updateAuthors }) => {
 			name,
 		};
 
-		addAuthor((prevState) => [...prevState, newAuthor]);
+		addAuthor((authors) => [...authors, newAuthor]);
 		updateAuthors(newAuthor);
 	};
 
