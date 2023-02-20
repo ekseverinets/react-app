@@ -97,7 +97,7 @@ const CreateCourse = ({ updateCourse, updatedAuthors, updateAuthors }) => {
 			name,
 		};
 
-		addAuthor((authors) => [...authors, newAuthor]);
+		addAuthor((prevState) => [...prevState, newAuthor]);
 		updateAuthors(newAuthor);
 	};
 
@@ -145,7 +145,7 @@ const CreateCourse = ({ updateCourse, updatedAuthors, updateAuthors }) => {
 				<div>
 					<h2>Authors</h2>
 					<ul>
-						{updatedAuthors
+						{authors
 							.filter((author) => !new Set(courseAuthors).has(author))
 							.map((author) => (
 								<li key={author.id}>
