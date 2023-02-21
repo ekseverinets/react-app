@@ -1,20 +1,25 @@
-import React from 'react';
+import React, { FC } from 'react';
 
 import styles from './CourseCard.module.css';
 
-import { getCourseDuration, getCourseAuthor } from '../../../../helpers';
-
 import { Button } from '../../../../common/Button/Button';
 
-export const CourseCard = ({
+export interface ICourse {
+	id: string;
+	title: string;
+	description: string;
+	duration: number;
+	creationDate: string;
+	authors: string[];
+}
+
+export const CourseCard: FC<ICourse> = ({
 	title,
 	description,
 	duration,
 	creationDate,
 	authors,
-	updatedAuthors,
 }) => {
-	const courseAuthors = getCourseAuthor(authors, updatedAuthors);
 	const creationDateFormatted = creationDate.replace(/[/]/g, '.');
 
 	return (
@@ -27,16 +32,20 @@ export const CourseCard = ({
 				<p>
 					<span>
 						Authors:
-						{courseAuthors}
+						{authors}
 					</span>
 				</p>
 				<p>
-					<span>Duration:</span> {getCourseDuration(duration)}
+					<span>Duration:</span> {duration}
 				</p>
 				<p>
 					<span>Created:</span> {creationDateFormatted}
 				</p>
-				<Button text='Show course' />
+				<Button
+					text='Show course'
+					// eslint-disable-next-line @typescript-eslint/no-empty-function
+					onClick={() => {}}
+				/>
 			</div>
 		</li>
 	);

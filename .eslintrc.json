@@ -4,17 +4,16 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["react-app", "prettier"],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
-    },
-    "ecmaVersion": 12,
-    "sourceType": "module"
-  },
+  "parser": "@typescript-eslint/parser",
   "plugins": [
-      "react",
-      "prettier"
+    "@typescript-eslint",
+    "prettier"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
   "rules": {
     "prettier/prettier": [
@@ -38,6 +37,8 @@
         "importOrderSortSpecifiers": true
       }
     ],
+
+    "@typescript-eslint/no-namespace": "off",
     "no-duplicate-imports": "error"
   }
 }

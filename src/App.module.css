@@ -1,0 +1,13 @@
+.linkWrap {
+  display: inline-flex;
+  padding: 15px 0 15px 80px;
+}
+
+.linkWrap a {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #25626c;
+  text-decoration: none;
+}

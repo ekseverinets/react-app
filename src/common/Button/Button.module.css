@@ -1,8 +1,18 @@
 .button {
+  margin: 20px auto;
+  border: 1px solid #25626c;
+  color: #25626c;
   padding: 7px 20px;
   background: transparent;
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   cursor: pointer;
+}
+
+.button:hover,
+.button:active {
+  background: #25626c;
+  border: 1px solid #25626c;
+  color: #fff;
 }
