@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
+
+import styles from './InputField.module.css';
 
 const validationHandler = (e, props) => {
 	if (!props.onValidateFunc) return;
@@ -13,8 +14,9 @@ const validationHandler = (e, props) => {
 		msg = `${props.title} must be at least ${props.min} characters long.`;
 	} else if (props.type === 'number' && parseInt(value) < 1) {
 		msg = 'Duration should be more than 0 minutes';
+	} else if (props.type === 'password' && !/^[a-zA-Z]*$/g.test(value)) {
+		msg = 'Please enter only letters';
 	}
-
 	props.onValidateFunc(msg, name);
 };
 
@@ -28,7 +30,7 @@ const InputField = (props) => {
 	};
 
 	return (
-		<div>
+		<div className={styles.inputWrap}>
 			<label>{props.title}</label>
 			<input
 				{...inputProps}
@@ -36,7 +38,7 @@ const InputField = (props) => {
 				onBlur={(e) => validationHandler(e, props)}
 			/>
 			{props.errorMsg && (
-				<span className='error-text'>
+				<span className={styles.errorText}>
 					{props.errorMsg === true
 						? `Please enter ${props.title}.`
 						: props.errorMsg}
@@ -52,27 +54,12 @@ InputField.defaultProps = {
 	title: '',
 	placeholder: '',
 	value: '',
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	onChangeFunc: () => {},
 	isReq: null,
 	reqType: '',
+	// eslint-disable-next-line @typescript-eslint/no-empty-function
 	onValidateFunc: () => {},
-};
-
-InputField.propTypes = {
-	type: PropTypes.string,
-	name: PropTypes.string,
-	title: PropTypes.string,
-	placeholder: PropTypes.string,
-	className: PropTypes.string,
-	outerClassName: PropTypes.string,
-	value: PropTypes.any,
-	min: PropTypes.number,
-	max: PropTypes.number,
-	onChangeFunc: PropTypes.func,
-	isReq: PropTypes.bool,
-	reqType: PropTypes.string,
-	errorMsg: PropTypes.any,
-	onValidateFunc: PropTypes.func,
 };
 
 export default memo(InputField);

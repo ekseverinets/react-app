@@ -1,0 +1,57 @@
+.formWrap {
+  margin: 0 auto;
+}
+
+.formInner {
+  max-width: 300px;
+  margin: 5px auto;
+}
+
+.formTitle {
+  display: flex;
+  margin: 20px auto 40px;
+  color: #25626c;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  justify-content: center;
+}
+
+.formBtn {
+  display: flex;
+  margin: 20px auto;
+  border: 1px solid #25626c;
+  color: #25626c;
+  padding: 7px 20px;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  min-width: 300px;
+  justify-content: center;
+}
+
+.formBtn:hover,
+.formBtn:active {
+  background: #25626c;
+  border: 1px solid #25626c;
+  color: #fff;
+}
+
+.formLink {
+  max-width: 300px;
+  margin: 0 auto;
+  font-size: 14px;
+  color: #444;
+  justify-content: center;
+  text-align: center;
+}
+
+.formLink a {
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #25626c;
+  text-decoration: none;
+}

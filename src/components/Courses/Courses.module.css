@@ -18,3 +18,7 @@ section button:active {
   border: 1px solid #25626c;
   color: #fff;
 }
+
+.btnWrap {
+  padding: 0 80px;
+}
