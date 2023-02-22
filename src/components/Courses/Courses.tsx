@@ -5,6 +5,8 @@ import styles from './Courses.module.css';
 
 import { CourseCard, ICourse } from './components/CourseCard/CourseCard';
 
+import { IPaths } from 'src/constants';
+
 import { Button } from 'src/common/Button/Button';
 
 interface CoursesProps {
@@ -18,7 +20,10 @@ const Courses: FC<CoursesProps> = ({ courses }) => {
 	return (
 		<section>
 			<div className={styles.btnWrap}>
-				<Button text={BUTTON_TEXT} onClick={() => navigate('../courses/add')} />
+				<Button
+					text={BUTTON_TEXT}
+					onClick={() => navigate(IPaths.CoursesAdd)}
+				/>
 			</div>
 			<ul className={styles.coursesList}>
 				{courses.map((course) => (

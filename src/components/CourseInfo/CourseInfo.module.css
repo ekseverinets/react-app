@@ -1,0 +1,32 @@
+.courseInfo {
+  padding: 0 80px;
+}
+
+.courseInfoWrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #444;
+}
+
+.courseInfoDesc {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 100px 30px 0;
+}
+
+.courseInfoDetails {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.courseInfoDetails p {
+  margin: 5px 0;
+}
+
+.courseInfoDetails span {
+  font-weight: bold;
+}

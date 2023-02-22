@@ -3,6 +3,8 @@ import { Link, Navigate } from 'react-router-dom';
 
 import InputField from '../../common/InputField/InputField';
 
+import { IPaths } from 'src/constants';
+
 import styles from './Login.module.css';
 
 const LoginForm = () => {
@@ -122,9 +124,9 @@ const LoginForm = () => {
 			</form>
 			<div className={styles.formLink}>
 				If you not have an account you can{' '}
-				<Link to='/registration'>Registration</Link>
+				<Link to={IPaths.Registration}>Registration</Link>
 			</div>
-			{submitted && <Navigate to='/courses' />}
+			{submitted && <Navigate to={IPaths.Courses} />}
 		</div>
 	);
 };

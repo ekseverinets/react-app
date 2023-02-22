@@ -1,20 +1,21 @@
 import React from 'react';
-
-import styles from './App.module.css';
+import { Link, Outlet } from 'react-router-dom';
 
 import { Header } from './components';
 
-import { Link, Outlet } from 'react-router-dom';
+import { IPaths } from './constants';
+
+import styles from './App.module.css';
 
 const App = () => {
 	return (
 		<>
 			<Header />
 			<div className={styles.linkWrap}>
-				<Link to='/registration'>Registration</Link>
+				<Link to={IPaths.Registration}>Registration</Link>
 			</div>
 			<div className={styles.linkWrap}>
-				<Link to='/login'>Login</Link>
+				<Link to={IPaths.Login}>Login</Link>
 			</div>
 			<Outlet />
 		</>

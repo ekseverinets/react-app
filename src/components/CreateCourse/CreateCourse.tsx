@@ -12,7 +12,7 @@ import { CreateAuthorForm } from './components/CreateAuthorForm/CreateAuthorForm
 
 import { Button } from 'src/common/Button/Button';
 
-import { MOCKED_AUTHORS_LIST } from '../../constants';
+import { MOCKED_AUTHORS_LIST, IPaths } from '../../constants';
 
 const CreateCourse = ({ updateCourse, updateAuthors }) => {
 	const [form, setForm] = useState({
@@ -21,6 +21,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 		courseDuration: '',
 	});
 
+	const BUTTON_TEXT = 'Back to courses';
 	const navigate = useNavigate();
 
 	const [courseAuthors, setCourseAuthors] = useState([]);
@@ -99,7 +100,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 		};
 
 		updateCourse(requestCourseBody);
-		navigate('../courses');
+		navigate(IPaths.Courses);
 	};
 
 	const handleAddAuthor = (name) => {
@@ -113,93 +114,101 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 	};
 
 	return (
-		<div className={styles.courseWrap}>
-			<h1>Add a new Course</h1>
-			<div className={styles.courseDesc}>
-				<InputField
-					type='text'
-					name='courseTitle'
-					title='Title'
-					className={styles.descArea}
-					value={form.courseTitle}
-					min={2}
-					onChangeFunc={onInputChange}
-					{...error.courseTitle}
-				/>
-				<InputField
-					type='textarea'
-					name='courseDesc'
-					title='Description'
-					value={form.courseDesc}
-					className={styles.descArea}
-					min={2}
-					onChangeFunc={onInputChange}
-					{...error.courseDesc}
-				/>
-			</div>
-			<div className={styles.newCourseInfo}>
-				<div>
-					<h2>Add author</h2>
+		<div className={styles.courseOuter}>
+			<Button text={BUTTON_TEXT} onClick={() => navigate(IPaths.Courses)} />
+			<div className={styles.courseWrap}>
+				<h1>Add a new Course</h1>
+				<div className={styles.courseDesc}>
+					<InputField
+						type='text'
+						name='courseTitle'
+						title='Title'
+						className={styles.descArea}
+						value={form.courseTitle}
+						min={2}
+						onChangeFunc={onInputChange}
+						{...error.courseTitle}
+					/>
+					<InputField
+						type='textarea'
+						name='courseDesc'
+						title='Description'
+						value={form.courseDesc}
+						className={styles.descArea}
+						min={2}
+						onChangeFunc={onInputChange}
+						{...error.courseDesc}
+					/>
+				</div>
+				<div className={styles.newCourseInfo}>
 					<div>
-						<CreateAuthorForm onAddAuthor={handleAddAuthor} />
+						<h2>Add author</h2>
+						<div>
+							<CreateAuthorForm onAddAuthor={handleAddAuthor} />
+						</div>
+
+						<InputField
+							type='number'
+							name='courseDuration'
+							title='Duration'
+							value={form.courseDuration}
+							min={1}
+							onChangeFunc={onInputChange}
+							{...error.courseDuration}
+						/>
+						<p>
+							<span>Duration: </span>
+							{getCourseDuration(form.courseDuration)}
+						</p>
 					</div>
 
-					<InputField
-						type='number'
-						name='courseDuration'
-						title='Duration'
-						value={form.courseDuration}
-						min={1}
-						onChangeFunc={onInputChange}
-						{...error.courseDuration}
-					/>
-					<p>
-						<span>Duration: </span>
-						{getCourseDuration(form.courseDuration)}
-					</p>
-				</div>
-
-				<div>
 					<div>
-						<h2>Authors</h2>
-						<ul>
-							{authors
-								.filter((author) => !new Set(courseAuthors).has(author))
-								.map((author) => (
-									<li key={author.id}>
+						<div>
+							<h2>Authors</h2>
+							<ul>
+								{authors
+									.filter((author) => !new Set(courseAuthors).has(author))
+									.map((author) => (
+										<li key={author.id}>
+											<AuthorItem
+												authorName={author.name}
+												handleAuthor={() => {
+													setCourseAuthors((prevState) => [
+														...prevState,
+														author,
+													]);
+												}}
+												btnText='Add author'
+											/>
+										</li>
+									))}
+							</ul>
+						</div>
+						<div>
+							<h2>Course Authors</h2>
+							<ul>
+								{courseAuthors.length === 0 && 'Author list is empty'}
+								{courseAuthors.map((courseAuthor) => (
+									<li key={courseAuthor.id}>
 										<AuthorItem
-											authorName={author.name}
+											authorName={courseAuthor.name}
 											handleAuthor={() => {
-												setCourseAuthors((prevState) => [...prevState, author]);
+												setCourseAuthors((prevState) =>
+													prevState.filter(
+														(item) => item.id !== courseAuthor.id
+													)
+												);
 											}}
-											btnText='Add author'
+											btnText='delete'
 										/>
 									</li>
 								))}
-						</ul>
-					</div>
-					<div>
-						<h2>Course Authors</h2>
-						<ul>
-							{courseAuthors.length === 0 && 'Author list is empty'}
-							{courseAuthors.map((courseAuthor) => (
-								<li key={courseAuthor.id}>
-									<AuthorItem
-										authorName={courseAuthor.name}
-										handleAuthor={() => {
-											setCourseAuthors((prevState) =>
-												prevState.filter((item) => item.id !== courseAuthor.id)
-											);
-										}}
-										btnText='delete'
-									/>
-								</li>
-							))}
-						</ul>
+							</ul>
+						</div>
 					</div>
 				</div>
+				<Button text='Create course' onClick={handleSubmit} />
 			</div>
-			<Button text='Create course' onClick={handleSubmit} />
 		</div>
 	);
 };
