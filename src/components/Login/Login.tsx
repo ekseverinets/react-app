@@ -7,7 +7,7 @@ import { IPaths } from 'src/constants';
 
 import styles from './Login.module.css';
 
-const LoginForm = () => {
+const LoginForm = ({ setUserName, setAuthState }) => {
 	const [values, setValues] = useState({
 		email: '',
 		password: '',
@@ -59,6 +59,7 @@ const LoginForm = () => {
 	};
 
 	const [submitted, setSubmitted] = useState(false);
+	const [hasAuthorError, setAuthorError] = useState(false);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -82,12 +83,19 @@ const LoginForm = () => {
 					'Content-Type': 'application/json',
 				},
 			});
-
 			const result = await response.json();
-			console.log(result);
 
-			setSubmitted(true);
+			if (!result.successful) {
+				setAuthorError(true);
+			} else {
+				setAuthorError(false);
+				setUserName(result.user.name);
+				localStorage.setItem('token', JSON.stringify(result.result));
+				setAuthState(true);
+			}
 		}
+
+		setSubmitted(true);
 	};
 
 	return (
@@ -103,9 +111,6 @@ const LoginForm = () => {
 					onChangeFunc={handleInputChange}
 					{...error.email}
 				/>
-				{submitted && !values.email && (
-					<span>Please enter an email address</span>
-				)}
 
 				<InputField
 					type='password'
@@ -116,17 +121,24 @@ const LoginForm = () => {
 					onChangeFunc={handleInputChange}
 					{...error.password}
 				/>
-				{submitted && !values.password && <span>Please enter a password</span>}
 
 				<button className={styles.formBtn} type='submit'>
 					Login
 				</button>
 			</form>
+
 			<div className={styles.formLink}>
 				If you not have an account you can{' '}
 				<Link to={IPaths.Registration}>Registration</Link>
 			</div>
-			{submitted && <Navigate to={IPaths.Courses} />}
+			{submitted && hasAuthorError === true && (
+				<div>
+					<span>Authentication error! Please try again</span>
+				</div>
+			)}
+			{submitted && hasAuthorError === false && (
+				<Navigate to={IPaths.Courses} />
+			)}
 		</div>
 	);
 };

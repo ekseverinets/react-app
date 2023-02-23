@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import App from 'src/App';
 
 import { Routes, Route, Navigate } from 'react-router-dom';
@@ -13,11 +13,25 @@ import {
 	MOCKED_AUTHORS_LIST,
 	IPaths,
 } from '../../constants';
-import { getCourseDuration, getCourseAuthor } from '../../helpers';
+
+import { getCourseAuthor } from '../../helpers';
 
 export const RootComponent = () => {
 	const [courses, updateCourse] = useState<ICourse[]>(MOCKED_COURSES_LIST);
 	const [authors, setUpdatedAuthors] = useState(MOCKED_AUTHORS_LIST);
+	const [name, setName] = useState('');
+	const [auth, setAuth] = useState(false);
+
+	useEffect(() => {
+		const auth = JSON.parse(localStorage.getItem('token'));
+		if (auth) {
+			setAuth(true);
+		}
+	}, [auth]);
+
+	const handleAuth = (auth) => {
+		setAuth(auth);
+	};
 
 	const handleUpdateCourses = (course) => {
 		updateCourse((prevState) => [...prevState, course]);
@@ -27,17 +41,35 @@ export const RootComponent = () => {
 		setUpdatedAuthors((prevState) => [...prevState, newAuthor]);
 	};
 
+	const handleUserName = (name) => {
+		setName(name);
+	};
+
 	const coursesWithAuthors = courses.map((item) => ({
 		...item,
-		duration: getCourseDuration(item.duration),
 		creationDate: item.creationDate.replace(/[/]/g, '.'),
 		authors: getCourseAuthor(item.authors, authors),
 	}));
 
 	return (
 		<Routes>
-			<Route path={IPaths.Home} element={<App />}>
-				<Route path={IPaths.Login} element={<LoginForm />} />
+			<Route
+				path={IPaths.Home}
+				element={
+					<App
+						name={name}
+						auth={auth}
+						setUserName={handleUserName}
+						setAuthState={handleAuth}
+					/>
+				}
+			>
+				<Route
+					path={IPaths.Login}
+					element={
+						<LoginForm setUserName={handleUserName} setAuthState={handleAuth} />
+					}
+				/>
 				<Route path={IPaths.Registration} element={<RegistrationForm />} />
 				<Route
 					path={IPaths.Courses}

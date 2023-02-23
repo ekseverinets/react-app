@@ -6,6 +6,8 @@ import { IPaths } from 'src/constants';
 
 import { Button } from 'src/common/Button/Button';
 
+import { getCourseDuration } from '../../helpers';
+
 import styles from './CourseInfo.module.css';
 
 interface CoursesProps {
@@ -33,7 +35,7 @@ const CourseInfo: FC<CoursesProps> = ({ courses }) => {
 								<span>ID:</span> {course.id}
 							</p>
 							<p>
-								<span>Duration:</span> {course.duration}
+								<span>Duration:</span> {getCourseDuration(course.duration)}
 							</p>
 							<p>
 								<span>Created:</span> {course.creationDate}

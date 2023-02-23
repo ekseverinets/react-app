@@ -7,10 +7,15 @@ import { IPaths } from './constants';
 
 import styles from './App.module.css';
 
-const App = () => {
+const App = ({ name, auth, setUserName, setAuthState }) => {
 	return (
 		<>
-			<Header />
+			<Header
+				name={name}
+				auth={auth}
+				setUserName={setUserName}
+				setAuthState={setAuthState}
+			/>
 			<div className={styles.linkWrap}>
 				<Link to={IPaths.Registration}>Registration</Link>
 			</div>

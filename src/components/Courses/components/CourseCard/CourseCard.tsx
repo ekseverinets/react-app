@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import styles from './CourseCard.module.css';
-
-import { IPaths } from 'src/constants';
-
 import { Button } from '../../../../common/Button/Button';
+
+import { getCourseDuration } from '../../../../helpers';
+
+import styles from './CourseCard.module.css';
 
 export interface ICourse {
 	id: string;
@@ -38,15 +38,12 @@ export const CourseCard: FC<ICourse> = ({
 					<span>Authors:</span> {authors}
 				</p>
 				<p>
-					<span>Duration:</span> {duration}
+					<span>Duration:</span> {getCourseDuration(duration)}
 				</p>
 				<p>
 					<span>Created:</span> {creationDate}
 				</p>
-				<Button
-					text={BUTTON_TEXT}
-					onClick={() => navigate(IPaths.Courses + `/${id}`)}
-				/>
+				<Button text={BUTTON_TEXT} onClick={() => navigate(`${id}`)} />
 			</div>
 		</li>
 	);
