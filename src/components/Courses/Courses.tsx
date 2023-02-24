@@ -14,14 +14,13 @@ interface CoursesProps {
 }
 
 const Courses: FC<CoursesProps> = ({ courses }) => {
-	const BUTTON_TEXT = 'Add new course';
 	const navigate = useNavigate();
 
 	return (
 		<section>
 			<div className={styles.btnWrap}>
 				<Button
-					text={BUTTON_TEXT}
+					text='Add new course'
 					onClick={() => navigate(IPaths.CoursesAdd)}
 				/>
 			</div>

@@ -15,46 +15,31 @@ import { Button } from 'src/common/Button/Button';
 import { MOCKED_AUTHORS_LIST, IPaths } from '../../constants';
 
 const CreateCourse = ({ updateCourse, updateAuthors }) => {
+	const navigate = useNavigate();
+
 	const [form, setForm] = useState({
 		courseTitle: '',
 		courseDesc: '',
 		courseDuration: '',
 	});
 
-	const BUTTON_TEXT = 'Back to courses';
-	const navigate = useNavigate();
+	const [error, setError] = useState({
+		courseTitle: {
+			isReq: true,
+			errorMsg: '',
+		},
+		courseDesc: {
+			isReq: true,
+			errorMsg: '',
+		},
+		courseDuration: {
+			isReq: true,
+			errorMsg: '',
+		},
+	});
 
 	const [courseAuthors, setCourseAuthors] = useState([]);
 	const [authors, addAuthor] = useState(MOCKED_AUTHORS_LIST);
-
-	const onInputValidate = (value, name) => {
-		setError((prev) => ({
-			...prev,
-			[name]: { ...prev[name], errorMsg: value },
-		}));
-	};
-
-	const isReq = true;
-	const errorMsg = '';
-	const onValidateFunc = onInputValidate;
-
-	const [error, setError] = useState({
-		courseTitle: {
-			isReq,
-			errorMsg,
-			onValidateFunc,
-		},
-		courseDesc: {
-			isReq,
-			errorMsg,
-			onValidateFunc,
-		},
-		courseDuration: {
-			isReq,
-			errorMsg,
-			onValidateFunc,
-		},
-	});
 
 	const onInputChange = useCallback((value, name) => {
 		setForm((prev) => ({
@@ -62,6 +47,13 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 			[name]: value,
 		}));
 	}, []);
+
+	const onValidateFunc = (value, name) => {
+		setError((prev) => ({
+			...prev,
+			[name]: { ...prev[name], errorMsg: value },
+		}));
+	};
 
 	const validateForm = () => {
 		let isInvalid = false;
@@ -71,7 +63,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 				isInvalid = true;
 			} else if (errObj.isReq && !form[errorItem]) {
 				isInvalid = true;
-				onInputValidate(true, errorItem);
+				onValidateFunc(true, errorItem);
 			}
 		});
 		return !isInvalid;
@@ -115,7 +107,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 
 	return (
 		<div className={styles.courseOuter}>
-			<Button text={BUTTON_TEXT} onClick={() => navigate(IPaths.Courses)} />
+			<Button text='Back to courses' onClick={() => navigate(IPaths.Courses)} />
 			<div className={styles.courseWrap}>
 				<h1>Add a new Course</h1>
 				<div className={styles.courseDesc}>
@@ -127,6 +119,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 						value={form.courseTitle}
 						min={2}
 						onChangeFunc={onInputChange}
+						onValidateFunc={onValidateFunc}
 						{...error.courseTitle}
 					/>
 					<InputField
@@ -137,6 +130,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 						className={styles.descArea}
 						min={2}
 						onChangeFunc={onInputChange}
+						onValidateFunc={onValidateFunc}
 						{...error.courseDesc}
 					/>
 				</div>
@@ -154,6 +148,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 							value={form.courseDuration}
 							min={1}
 							onChangeFunc={onInputChange}
+							onValidateFunc={onValidateFunc}
 							{...error.courseDuration}
 						/>
 						<p>

@@ -1,11 +1,7 @@
 import React from 'react';
-import { Link, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 import { Header } from './components';
-
-import { IPaths } from './constants';
-
-import styles from './App.module.css';
 
 const App = ({ name, auth, setUserName, setAuthState }) => {
 	return (
@@ -16,12 +12,6 @@ const App = ({ name, auth, setUserName, setAuthState }) => {
 				setUserName={setUserName}
 				setAuthState={setAuthState}
 			/>
-			<div className={styles.linkWrap}>
-				<Link to={IPaths.Registration}>Registration</Link>
-			</div>
-			<div className={styles.linkWrap}>
-				<Link to={IPaths.Login}>Login</Link>
-			</div>
 			<Outlet />
 		</>
 	);

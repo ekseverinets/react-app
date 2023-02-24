@@ -4,7 +4,7 @@ export enum IPaths {
 	Registration = '/registration',
 	Courses = '/courses',
 	CoursesAdd = '/courses/add',
-	Course = '/courses/:id',
+	Course = '/courses/:courseId',
 	NotFound = '*',
 }
 

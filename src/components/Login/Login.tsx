@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import InputField from '../../common/InputField/InputField';
 
@@ -8,10 +8,25 @@ import { IPaths } from 'src/constants';
 import styles from './Login.module.css';
 
 const LoginForm = ({ setUserName, setAuthState }) => {
+	const navigate = useNavigate();
+
 	const [values, setValues] = useState({
 		email: '',
 		password: '',
 	});
+
+	const [error, setError] = useState({
+		email: {
+			isReq: true,
+			errorMsg: '',
+		},
+		password: {
+			isReq: true,
+			errorMsg: '',
+		},
+	});
+
+	const [hasAuthorError, setAuthorError] = useState(false);
 
 	const handleInputChange = useCallback((value, name) => {
 		setValues((prev) => ({
@@ -20,29 +35,12 @@ const LoginForm = ({ setUserName, setAuthState }) => {
 		}));
 	}, []);
 
-	const onInputValidate = (value, name) => {
+	const onValidateFunc = (value, name) => {
 		setError((prev) => ({
 			...prev,
 			[name]: { ...prev[name], errorMsg: value },
 		}));
 	};
-
-	const isReq = true;
-	const errorMsg = '';
-	const onValidateFunc = onInputValidate;
-
-	const [error, setError] = useState({
-		email: {
-			isReq,
-			errorMsg,
-			onValidateFunc,
-		},
-		password: {
-			isReq,
-			errorMsg,
-			onValidateFunc,
-		},
-	});
 
 	const validateForm = () => {
 		let isInvalid = false;
@@ -52,14 +50,11 @@ const LoginForm = ({ setUserName, setAuthState }) => {
 				isInvalid = true;
 			} else if (errObj.isReq && !values[errorItem]) {
 				isInvalid = true;
-				onInputValidate(true, errorItem);
+				onValidateFunc(true, errorItem);
 			}
 		});
 		return !isInvalid;
 	};
-
-	const [submitted, setSubmitted] = useState(false);
-	const [hasAuthorError, setAuthorError] = useState(false);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -92,10 +87,9 @@ const LoginForm = ({ setUserName, setAuthState }) => {
 				setUserName(result.user.name);
 				localStorage.setItem('token', JSON.stringify(result.result));
 				setAuthState(true);
+				navigate(IPaths.Courses);
 			}
 		}
-
-		setSubmitted(true);
 	};
 
 	return (
@@ -109,6 +103,7 @@ const LoginForm = ({ setUserName, setAuthState }) => {
 					title='Email'
 					value={values.email}
 					onChangeFunc={handleInputChange}
+					onValidateFunc={onValidateFunc}
 					{...error.email}
 				/>
 
@@ -119,6 +114,7 @@ const LoginForm = ({ setUserName, setAuthState }) => {
 					title='Password'
 					value={values.password}
 					onChangeFunc={handleInputChange}
+					onValidateFunc={onValidateFunc}
 					{...error.password}
 				/>
 
@@ -127,18 +123,16 @@ const LoginForm = ({ setUserName, setAuthState }) => {
 				</button>
 			</form>
 
+			{hasAuthorError === true && (
+				<div className={styles.formError}>
+					<span>Authentication error! Please try again</span>
+				</div>
+			)}
+
 			<div className={styles.formLink}>
 				If you not have an account you can{' '}
 				<Link to={IPaths.Registration}>Registration</Link>
 			</div>
-			{submitted && hasAuthorError === true && (
-				<div>
-					<span>Authentication error! Please try again</span>
-				</div>
-			)}
-			{submitted && hasAuthorError === false && (
-				<Navigate to={IPaths.Courses} />
-			)}
 		</div>
 	);
 };

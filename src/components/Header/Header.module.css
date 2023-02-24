@@ -32,3 +32,22 @@
   background: #fff;
   color: #25626c;
 }
+
+.linkWrap {
+  display: inline-flex;
+  padding: 15px 0 15px 20px;
+}
+
+.linkWrap a {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+}
+
+.linkWrap a:hover,
+.linkWrap a.active {
+  text-decoration: underline;
+}
