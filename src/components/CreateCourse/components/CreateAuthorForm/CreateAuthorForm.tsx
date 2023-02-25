@@ -5,7 +5,7 @@ import { Button } from '../../../../common/Button/Button';
 import styles from './CreateAuthorForm.module.css';
 
 export const CreateAuthorForm = ({ onAddAuthor }) => {
-	const [author, setAuthor] = useState('');
+	const [author, setAuthor] = useState<string>('');
 
 	return (
 		<>
@@ -17,7 +17,6 @@ export const CreateAuthorForm = ({ onAddAuthor }) => {
 			/>
 
 			<Button
-				className={styles.authorBtn}
 				text='Create author'
 				onClick={() => {
 					setAuthor('');

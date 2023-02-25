@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 
 import { Header } from './components';
 
-const App = ({ name, auth, setUserName, setAuthState }) => {
+import { IHeader } from './components/Header/Header';
+
+const App: FC<IHeader> = ({ name, auth, setUserName, setAuthState }) => {
 	return (
 		<>
 			<Header

@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import App from 'src/App';
 
-import { Routes, Route, Navigate } from 'react-router-dom';
+import {
+	Routes,
+	Route,
+	Navigate,
+	useNavigate,
+	useLocation,
+} from 'react-router-dom';
 
 import LoginForm from '../Login/Login';
 import RegistrationForm from '../Registration/Registration';
@@ -15,22 +21,34 @@ import {
 } from '../../constants';
 
 import { getCourseAuthor } from '../../helpers';
+import { RequireAuth } from './RequireAuth';
 
 export const RootComponent = () => {
+	const location = useLocation();
+	const navigate = useNavigate();
 	const [courses, updateCourse] = useState<ICourse[]>(MOCKED_COURSES_LIST);
-	const [authors, setUpdatedAuthors] = useState(MOCKED_AUTHORS_LIST);
-	const [name, setName] = useState('');
-	const [auth, setAuth] = useState(false);
+	const [authors, setUpdatedAuthors] =
+		useState<{ id: string; name: string }[]>(MOCKED_AUTHORS_LIST);
+	const [name, setName] = useState<string>('');
+	const [auth, setAuth] = useState<boolean>(false);
 
 	useEffect(() => {
-		const auth = JSON.parse(localStorage.getItem('token'));
-		if (auth) {
+		const authToken = JSON.parse(localStorage.getItem('token'));
+		if (authToken) {
 			setAuth(true);
 		}
-	}, [auth]);
 
-	const handleAuth = (auth) => {
+		if (location.pathname === IPaths.Home) {
+			navigate(IPaths.Courses);
+		}
+	}, []);
+
+	const handleAuth = (auth: boolean) => {
 		setAuth(auth);
+	};
+
+	const handleUserName = (name: string) => {
+		setName(name);
 	};
 
 	const handleUpdateCourses = (course) => {
@@ -39,10 +57,6 @@ export const RootComponent = () => {
 
 	const handleUpdateAuthors = (newAuthor) => {
 		setUpdatedAuthors((prevState) => [...prevState, newAuthor]);
-	};
-
-	const handleUserName = (name) => {
-		setName(name);
 	};
 
 	const coursesWithAuthors = courses.map((item) => ({
@@ -73,22 +87,39 @@ export const RootComponent = () => {
 				<Route path={IPaths.Registration} element={<RegistrationForm />} />
 				<Route
 					path={IPaths.Courses}
-					element={<Courses courses={coursesWithAuthors} />}
+					element={
+						<RequireAuth auth={auth}>
+							<Courses courses={coursesWithAuthors} />
+						</RequireAuth>
+					}
 				/>
 				<Route
 					path={IPaths.CoursesAdd}
 					element={
-						<CreateCourse
-							updateCourse={handleUpdateCourses}
-							updateAuthors={handleUpdateAuthors}
-						/>
+						<RequireAuth auth={auth}>
+							<CreateCourse
+								updateCourse={handleUpdateCourses}
+								updateAuthors={handleUpdateAuthors}
+							/>
+						</RequireAuth>
 					}
 				/>
 				<Route
 					path={IPaths.Course}
-					element={<CourseInfo courses={coursesWithAuthors} />}
+					element={
+						<RequireAuth auth={auth}>
+							<CourseInfo courses={coursesWithAuthors} />
+						</RequireAuth>
+					}
 				/>
-				<Route path={IPaths.NotFound} element={<Navigate to='/' />} />
+				<Route
+					path={IPaths.NotFound}
+					element={
+						<RequireAuth auth={auth}>
+							<Navigate to={IPaths.Courses} />
+						</RequireAuth>
+					}
+				/>
 			</Route>
 		</Routes>
 	);

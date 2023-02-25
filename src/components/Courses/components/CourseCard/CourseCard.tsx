@@ -25,7 +25,6 @@ export const CourseCard: FC<ICourse> = ({
 	authors,
 }) => {
 	const navigate = useNavigate();
-	const BUTTON_TEXT = 'Show course';
 
 	return (
 		<li className={styles.card}>
@@ -43,7 +42,7 @@ export const CourseCard: FC<ICourse> = ({
 				<p>
 					<span>Created:</span> {creationDate}
 				</p>
-				<Button text={BUTTON_TEXT} onClick={() => navigate(`${id}`)} />
+				<Button text='Show course' onClick={() => navigate(`${id}`)} />
 			</div>
 		</li>
 	);
