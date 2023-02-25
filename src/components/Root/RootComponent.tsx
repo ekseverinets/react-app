@@ -20,8 +20,15 @@ import {
 	IPaths,
 } from '../../constants';
 
-import { getCourseAuthor } from '../../helpers';
+import { getCourseAuthor, getCreationDate } from '../../helpers';
 import { RequireAuth } from './RequireAuth';
+
+export interface IUser {
+	isAuth: boolean;
+	name: string;
+	email: string;
+	token: string;
+}
 
 export const RootComponent = () => {
 	const location = useLocation();
@@ -29,13 +36,21 @@ export const RootComponent = () => {
 	const [courses, updateCourse] = useState<ICourse[]>(MOCKED_COURSES_LIST);
 	const [authors, setUpdatedAuthors] =
 		useState<{ id: string; name: string }[]>(MOCKED_AUTHORS_LIST);
-	const [name, setName] = useState<string>('');
-	const [auth, setAuth] = useState<boolean>(false);
+
+	const [user, setUser] = useState<IUser>({
+		isAuth: false,
+		name: '',
+		email: '',
+		token: '',
+	});
 
 	useEffect(() => {
 		const authToken = JSON.parse(localStorage.getItem('token'));
 		if (authToken) {
-			setAuth(true);
+			setUser((prev) => ({
+				...prev,
+				isAuth: true,
+			}));
 		}
 
 		if (location.pathname === IPaths.Home) {
@@ -43,25 +58,25 @@ export const RootComponent = () => {
 		}
 	}, []);
 
-	const handleAuth = (auth: boolean) => {
-		setAuth(auth);
+	const handleSetUser = (auth: boolean, name: string) => {
+		setUser((prev) => ({
+			...prev,
+			isAuth: auth,
+			name: name,
+		}));
 	};
 
-	const handleUserName = (name: string) => {
-		setName(name);
-	};
-
-	const handleUpdateCourses = (course) => {
+	const handleUpdateCourses = (course: ICourse) => {
 		updateCourse((prevState) => [...prevState, course]);
 	};
 
-	const handleUpdateAuthors = (newAuthor) => {
+	const handleUpdateAuthors = (newAuthor: { id: string; name: string }) => {
 		setUpdatedAuthors((prevState) => [...prevState, newAuthor]);
 	};
 
 	const coursesWithAuthors = courses.map((item) => ({
 		...item,
-		creationDate: item.creationDate.replace(/[/]/g, '.'),
+		creationDate: getCreationDate(item.creationDate),
 		authors: getCourseAuthor(item.authors, authors),
 	}));
 
@@ -69,26 +84,17 @@ export const RootComponent = () => {
 		<Routes>
 			<Route
 				path={IPaths.Home}
-				element={
-					<App
-						name={name}
-						auth={auth}
-						setUserName={handleUserName}
-						setAuthState={handleAuth}
-					/>
-				}
+				element={<App userData={user} handleSetUser={handleSetUser} />}
 			>
 				<Route
 					path={IPaths.Login}
-					element={
-						<LoginForm setUserName={handleUserName} setAuthState={handleAuth} />
-					}
+					element={<LoginForm handleSetUser={handleSetUser} />}
 				/>
 				<Route path={IPaths.Registration} element={<RegistrationForm />} />
 				<Route
 					path={IPaths.Courses}
 					element={
-						<RequireAuth auth={auth}>
+						<RequireAuth auth={user.isAuth}>
 							<Courses courses={coursesWithAuthors} />
 						</RequireAuth>
 					}
@@ -96,7 +102,7 @@ export const RootComponent = () => {
 				<Route
 					path={IPaths.CoursesAdd}
 					element={
-						<RequireAuth auth={auth}>
+						<RequireAuth auth={user.isAuth}>
 							<CreateCourse
 								updateCourse={handleUpdateCourses}
 								updateAuthors={handleUpdateAuthors}
@@ -107,7 +113,7 @@ export const RootComponent = () => {
 				<Route
 					path={IPaths.Course}
 					element={
-						<RequireAuth auth={auth}>
+						<RequireAuth auth={user.isAuth}>
 							<CourseInfo courses={coursesWithAuthors} />
 						</RequireAuth>
 					}
@@ -115,7 +121,7 @@ export const RootComponent = () => {
 				<Route
 					path={IPaths.NotFound}
 					element={
-						<RequireAuth auth={auth}>
+						<RequireAuth auth={user.isAuth}>
 							<Navigate to={IPaths.Courses} />
 						</RequireAuth>
 					}

@@ -7,36 +7,34 @@ import { Logo } from './components/Logo/Logo';
 
 import { Button } from 'src/common/Button/Button';
 
+import { IUser } from '../Root/RootComponent';
+
 import styles from './Header.module.css';
 
 export interface IHeader {
-	name: string;
-	auth: boolean;
-	setUserName: React.Dispatch<React.SetStateAction<string>>;
-	setAuthState: React.Dispatch<React.SetStateAction<boolean>>;
+	userData: IUser;
+	handleSetUser: (isAuth: boolean, user: string) => void;
 }
 
-const Header: FC<IHeader> = ({ name, auth, setUserName, setAuthState }) => {
+const Header: FC<IHeader> = ({ userData, handleSetUser }) => {
 	const navigate = useNavigate();
+
+	const handleLogout = () => {
+		localStorage.clear();
+		navigate(IPaths.Login);
+		handleSetUser(false, '');
+	};
 
 	return (
 		<header className={styles.header}>
-			<Logo auth={auth} />
-			{auth && (
+			<Logo auth={userData.isAuth} />
+			{userData.isAuth && (
 				<div className={styles.authInfo}>
-					<span>{name}</span>
-					<Button
-						text='Logout'
-						onClick={() => {
-							setUserName('');
-							localStorage.clear();
-							setAuthState(false);
-							navigate(IPaths.Login);
-						}}
-					/>
+					<span>{userData.name}</span>
+					<Button text='Logout' onClick={handleLogout} />
 				</div>
 			)}
-			{!auth && (
+			{!userData.isAuth && (
 				<div>
 					<div className={styles.linkWrap}>
 						<NavLink

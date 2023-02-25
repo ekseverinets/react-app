@@ -18,7 +18,7 @@ const CourseInfo: FC<CoursesProps> = ({ courses }) => {
 	const navigate = useNavigate();
 	const { courseId } = useParams();
 
-	const course = courses.find((course) => course.id === courseId);
+	const course = courses.find(({ id }) => id === courseId);
 
 	if (!course) {
 		return <Navigate to={IPaths.Courses} />;

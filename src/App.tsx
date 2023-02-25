@@ -5,15 +5,10 @@ import { Header } from './components';
 
 import { IHeader } from './components/Header/Header';
 
-const App: FC<IHeader> = ({ name, auth, setUserName, setAuthState }) => {
+const App: FC<IHeader> = ({ userData, handleSetUser }) => {
 	return (
 		<>
-			<Header
-				name={name}
-				auth={auth}
-				setUserName={setUserName}
-				setAuthState={setAuthState}
-			/>
+			<Header userData={userData} handleSetUser={handleSetUser} />
 			<Outlet />
 		</>
 	);

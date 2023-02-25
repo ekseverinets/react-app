@@ -7,7 +7,7 @@ import { IPaths } from 'src/constants';
 
 import styles from './Login.module.css';
 
-const LoginForm = ({ setUserName, setAuthState }) => {
+const LoginForm = ({ handleSetUser }) => {
 	const navigate = useNavigate();
 
 	const [values, setValues] = useState({
@@ -84,9 +84,8 @@ const LoginForm = ({ setUserName, setAuthState }) => {
 				setAuthorError(true);
 			} else {
 				setAuthorError(false);
-				setUserName(result.user.name);
+				handleSetUser(true, result.user.name);
 				localStorage.setItem('token', JSON.stringify(result.result));
-				setAuthState(true);
 				navigate(IPaths.Courses);
 			}
 		}
@@ -123,7 +122,7 @@ const LoginForm = ({ setUserName, setAuthState }) => {
 				</button>
 			</form>
 
-			{hasAuthorError === true && (
+			{hasAuthorError && (
 				<div className={styles.formError}>
 					<span>Authentication error! Please try again</span>
 				</div>
