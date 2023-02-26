@@ -1,9 +1,13 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from '../../../../common/Button/Button';
 
-import { getCourseDuration } from '../../../../helpers';
+import {
+	getCourseAuthor,
+	getCourseDuration,
+	getCreationDate,
+} from '../../../../helpers';
 
 import styles from './CourseCard.module.css';
 
@@ -16,13 +20,18 @@ export interface ICourse {
 	authors: string[];
 }
 
-export const CourseCard: FC<ICourse> = ({
+// export interface IAuthors {
+// 	updatedAuthors: string[];
+// }
+
+export const CourseCard = ({
 	id,
 	title,
 	description,
 	duration,
 	creationDate,
 	authors,
+	updatedAuthors,
 }) => {
 	const navigate = useNavigate();
 
@@ -34,13 +43,13 @@ export const CourseCard: FC<ICourse> = ({
 			</div>
 			<div className={styles.details}>
 				<p>
-					<span>Authors:</span> {authors}
+					<span>Authors:</span> {getCourseAuthor(authors, updatedAuthors)}
 				</p>
 				<p>
 					<span>Duration:</span> {getCourseDuration(duration)}
 				</p>
 				<p>
-					<span>Created:</span> {creationDate}
+					<span>Created:</span> {getCreationDate(creationDate)}
 				</p>
 				<Button text='Show course' onClick={() => navigate(`${id}`)} />
 			</div>

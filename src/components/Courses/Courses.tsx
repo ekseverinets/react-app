@@ -1,19 +1,20 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './Courses.module.css';
 
-import { CourseCard, ICourse } from './components/CourseCard/CourseCard';
+import { CourseCard } from './components/CourseCard/CourseCard';
 
 import { IPaths } from 'src/constants';
 
 import { Button } from 'src/common/Button/Button';
 
-interface CoursesProps {
-	courses: ICourse[];
-}
+// interface CoursesProps {
+// 	courses: ICourse[];
+// 	updatedAuthors: IAuthors;
+// }
 
-const Courses: FC<CoursesProps> = ({ courses }) => {
+const Courses = ({ courses, updatedAuthors }) => {
 	const navigate = useNavigate();
 
 	return (
@@ -26,7 +27,11 @@ const Courses: FC<CoursesProps> = ({ courses }) => {
 			</div>
 			<ul className={styles.coursesList}>
 				{courses.map((course) => (
-					<CourseCard key={course.id} {...course} />
+					<CourseCard
+						key={course.id}
+						{...course}
+						updatedAuthors={updatedAuthors}
+					/>
 				))}
 			</ul>
 		</section>

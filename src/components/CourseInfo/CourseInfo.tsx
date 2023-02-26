@@ -1,20 +1,24 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useNavigate, Navigate, useParams } from 'react-router-dom';
 
-import { ICourse } from '../Courses/components/CourseCard/CourseCard';
+// import { ICourse } from '../Courses/components/CourseCard/CourseCard';
 import { IPaths } from 'src/constants';
 
 import { Button } from 'src/common/Button/Button';
 
-import { getCourseDuration } from '../../helpers';
+import {
+	getCourseAuthor,
+	getCourseDuration,
+	getCreationDate,
+} from '../../helpers';
 
 import styles from './CourseInfo.module.css';
 
-interface CoursesProps {
-	courses: ICourse[];
-}
+// interface CoursesProps {
+// 	courses: ICourse[];
+// }
 
-const CourseInfo: FC<CoursesProps> = ({ courses }) => {
+const CourseInfo = ({ courses, updatedAuthors }) => {
 	const navigate = useNavigate();
 	const { courseId } = useParams();
 
@@ -40,10 +44,11 @@ const CourseInfo: FC<CoursesProps> = ({ courses }) => {
 						<span>Duration:</span> {getCourseDuration(course.duration)}
 					</p>
 					<p>
-						<span>Created:</span> {course.creationDate}
+						<span>Created:</span> {getCreationDate(course.creationDate)}
 					</p>
 					<p>
-						<span>Authors:</span> {course.authors}
+						<span>Authors:</span>{' '}
+						{getCourseAuthor(course.authors, updatedAuthors)}
 					</p>
 				</div>
 			</article>

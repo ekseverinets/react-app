@@ -9,19 +9,17 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
-import LoginForm from '../Login/Login';
-import RegistrationForm from '../Registration/Registration';
-import { Courses, CreateCourse, CourseInfo } from '../../components';
-import { ICourse } from '../Courses/components/CourseCard/CourseCard';
-
 import {
 	MOCKED_COURSES_LIST,
 	MOCKED_AUTHORS_LIST,
 	IPaths,
 } from '../../constants';
 
-import { getCourseAuthor, getCreationDate } from '../../helpers';
 import { RequireAuth } from './RequireAuth';
+import LoginForm from '../Login/Login';
+import RegistrationForm from '../Registration/Registration';
+import { Courses, CreateCourse, CourseInfo } from '../../components';
+import { ICourse } from '../Courses/components/CourseCard/CourseCard';
 
 export interface IUser {
 	isAuth: boolean;
@@ -33,7 +31,7 @@ export interface IUser {
 export const RootComponent = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
-	const [courses, updateCourse] = useState<ICourse[]>(MOCKED_COURSES_LIST);
+	const [courses, updateCourse] = useState(MOCKED_COURSES_LIST);
 	const [authors, setUpdatedAuthors] =
 		useState<{ id: string; name: string }[]>(MOCKED_AUTHORS_LIST);
 
@@ -74,12 +72,6 @@ export const RootComponent = () => {
 		setUpdatedAuthors((prevState) => [...prevState, newAuthor]);
 	};
 
-	const coursesWithAuthors = courses.map((item) => ({
-		...item,
-		creationDate: getCreationDate(item.creationDate),
-		authors: getCourseAuthor(item.authors, authors),
-	}));
-
 	return (
 		<Routes>
 			<Route
@@ -94,15 +86,15 @@ export const RootComponent = () => {
 				<Route
 					path={IPaths.Courses}
 					element={
-						<RequireAuth auth={user.isAuth}>
-							<Courses courses={coursesWithAuthors} />
+						<RequireAuth>
+							<Courses courses={courses} updatedAuthors={authors} />
 						</RequireAuth>
 					}
 				/>
 				<Route
 					path={IPaths.CoursesAdd}
 					element={
-						<RequireAuth auth={user.isAuth}>
+						<RequireAuth>
 							<CreateCourse
 								updateCourse={handleUpdateCourses}
 								updateAuthors={handleUpdateAuthors}
@@ -113,15 +105,15 @@ export const RootComponent = () => {
 				<Route
 					path={IPaths.Course}
 					element={
-						<RequireAuth auth={user.isAuth}>
-							<CourseInfo courses={coursesWithAuthors} />
+						<RequireAuth>
+							<CourseInfo courses={courses} updatedAuthors={authors} />
 						</RequireAuth>
 					}
 				/>
 				<Route
 					path={IPaths.NotFound}
 					element={
-						<RequireAuth auth={user.isAuth}>
+						<RequireAuth>
 							<Navigate to={IPaths.Courses} />
 						</RequireAuth>
 					}
