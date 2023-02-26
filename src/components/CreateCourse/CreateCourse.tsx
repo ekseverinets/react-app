@@ -13,6 +13,7 @@ import { CreateAuthorForm } from './components/CreateAuthorForm/CreateAuthorForm
 import { Button } from 'src/common/Button/Button';
 
 import { MOCKED_AUTHORS_LIST, IPaths } from '../../constants';
+import { IAuthor } from '../../models';
 
 const CreateCourse = ({ updateCourse, updateAuthors }) => {
 	const navigate = useNavigate();
@@ -38,17 +39,17 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 		},
 	});
 
-	const [courseAuthors, setCourseAuthors] = useState([]);
-	const [authors, addAuthor] = useState(MOCKED_AUTHORS_LIST);
+	const [courseAuthors, setCourseAuthors] = useState<IAuthor[]>([]);
+	const [authors, addAuthor] = useState<IAuthor[]>(MOCKED_AUTHORS_LIST);
 
-	const onInputChange = useCallback((value, name) => {
+	const onInputChange = useCallback((value: string, name: string) => {
 		setForm((prev) => ({
 			...prev,
 			[name]: value,
 		}));
 	}, []);
 
-	const onValidateFunc = (value, name) => {
+	const onValidateFunc = (value: boolean, name: string) => {
 		setError((prev) => ({
 			...prev,
 			[name]: { ...prev[name], errorMsg: value },
@@ -95,7 +96,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 		navigate(IPaths.Courses);
 	};
 
-	const handleAddAuthor = (name) => {
+	const handleAddAuthor = (name: string) => {
 		const newAuthor = {
 			id: UUID(),
 			name,

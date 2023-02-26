@@ -19,21 +19,14 @@ import { RequireAuth } from './RequireAuth';
 import LoginForm from '../Login/Login';
 import RegistrationForm from '../Registration/Registration';
 import { Courses, CreateCourse, CourseInfo } from '../../components';
-import { ICourse } from '../Courses/components/CourseCard/CourseCard';
 
-export interface IUser {
-	isAuth: boolean;
-	name: string;
-	email: string;
-	token: string;
-}
+import { IUser, ICourse, IAuthor } from '../../models';
 
 export const RootComponent = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 	const [courses, updateCourse] = useState(MOCKED_COURSES_LIST);
-	const [authors, setUpdatedAuthors] =
-		useState<{ id: string; name: string }[]>(MOCKED_AUTHORS_LIST);
+	const [authors, setUpdatedAuthors] = useState<IAuthor[]>(MOCKED_AUTHORS_LIST);
 
 	const [user, setUser] = useState<IUser>({
 		isAuth: false,
@@ -68,7 +61,7 @@ export const RootComponent = () => {
 		updateCourse((prevState) => [...prevState, course]);
 	};
 
-	const handleUpdateAuthors = (newAuthor: { id: string; name: string }) => {
+	const handleUpdateAuthors = (newAuthor: IAuthor) => {
 		setUpdatedAuthors((prevState) => [...prevState, newAuthor]);
 	};
 

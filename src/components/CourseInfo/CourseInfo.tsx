@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useNavigate, Navigate, useParams } from 'react-router-dom';
 
-// import { ICourse } from '../Courses/components/CourseCard/CourseCard';
 import { IPaths } from 'src/constants';
 
 import { Button } from 'src/common/Button/Button';
@@ -12,13 +11,16 @@ import {
 	getCreationDate,
 } from '../../helpers';
 
+import { ICourse, IAuthor } from '../../models';
+
 import styles from './CourseInfo.module.css';
 
-// interface CoursesProps {
-// 	courses: ICourse[];
-// }
+interface CourseInfoProps {
+	courses: ICourse[];
+	updatedAuthors: IAuthor[];
+}
 
-const CourseInfo = ({ courses, updatedAuthors }) => {
+const CourseInfo: FC<CourseInfoProps> = ({ courses, updatedAuthors }) => {
 	const navigate = useNavigate();
 	const { courseId } = useParams();
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Button } from '../../../../common/Button/Button';
@@ -9,22 +9,15 @@ import {
 	getCreationDate,
 } from '../../../../helpers';
 
+import { ICourse, IAuthor } from '../../../../models';
+
 import styles from './CourseCard.module.css';
 
-export interface ICourse {
-	id: string;
-	title: string;
-	description: string;
-	duration: number;
-	creationDate: string;
-	authors: string[];
+interface ICourseCardProps extends ICourse {
+	updatedAuthors: IAuthor[];
 }
 
-// export interface IAuthors {
-// 	updatedAuthors: string[];
-// }
-
-export const CourseCard = ({
+export const CourseCard: FC<ICourseCardProps> = ({
 	id,
 	title,
 	description,

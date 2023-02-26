@@ -7,7 +7,7 @@ import { Logo } from './components/Logo/Logo';
 
 import { Button } from 'src/common/Button/Button';
 
-import { IUser } from '../Root/RootComponent';
+import { IUser } from '../../models';
 
 import styles from './Header.module.css';
 
@@ -28,13 +28,12 @@ const Header: FC<IHeader> = ({ userData, handleSetUser }) => {
 	return (
 		<header className={styles.header}>
 			<Logo auth={userData.isAuth} />
-			{userData.isAuth && (
+			{userData.isAuth ? (
 				<div className={styles.authInfo}>
 					<span>{userData.name}</span>
 					<Button text='Logout' onClick={handleLogout} />
 				</div>
-			)}
-			{!userData.isAuth && (
+			) : (
 				<div>
 					<div className={styles.linkWrap}>
 						<NavLink

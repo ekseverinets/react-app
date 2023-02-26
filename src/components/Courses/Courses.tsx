@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import styles from './Courses.module.css';
@@ -7,14 +7,16 @@ import { CourseCard } from './components/CourseCard/CourseCard';
 
 import { IPaths } from 'src/constants';
 
+import { ICourse, IAuthor } from '../../models';
+
 import { Button } from 'src/common/Button/Button';
 
-// interface CoursesProps {
-// 	courses: ICourse[];
-// 	updatedAuthors: IAuthors;
-// }
+interface CoursesProps {
+	courses: ICourse[];
+	updatedAuthors: IAuthor[];
+}
 
-const Courses = ({ courses, updatedAuthors }) => {
+const Courses: FC<CoursesProps> = ({ courses, updatedAuthors }) => {
 	const navigate = useNavigate();
 
 	return (
