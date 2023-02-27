@@ -1,21 +1,13 @@
-import React from 'react';
+import React, { FC } from 'react';
+import { Outlet } from 'react-router-dom';
 
-import styles from './App.module.css';
-
+import { IHeader } from './components/Header/Header';
 import { Header } from './components';
 
-import { Link, Outlet } from 'react-router-dom';
-
-const App = () => {
+const App: FC<IHeader> = ({ userData, handleSetUser }) => {
 	return (
 		<>
-			<Header />
-			<div className={styles.linkWrap}>
-				<Link to='/registration'>Registration</Link>
-			</div>
-			<div className={styles.linkWrap}>
-				<Link to='/login'>Login</Link>
-			</div>
+			<Header userData={userData} handleSetUser={handleSetUser} />
 			<Outlet />
 		</>
 	);

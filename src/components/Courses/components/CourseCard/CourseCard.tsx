@@ -1,26 +1,30 @@
 import React, { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+import { ICourse, IAuthor } from '../../../../models';
+import {
+	getCourseAuthor,
+	getCourseDuration,
+	getCreationDate,
+} from '../../../../helpers';
+import { Button } from '../../../../common/Button/Button';
 
 import styles from './CourseCard.module.css';
 
-import { Button } from '../../../../common/Button/Button';
-
-export interface ICourse {
-	id: string;
-	title: string;
-	description: string;
-	duration: number;
-	creationDate: string;
-	authors: string[];
+interface ICourseCardProps extends ICourse {
+	updatedAuthors: IAuthor[];
 }
 
-export const CourseCard: FC<ICourse> = ({
+export const CourseCard: FC<ICourseCardProps> = ({
+	id,
 	title,
 	description,
 	duration,
 	creationDate,
 	authors,
+	updatedAuthors,
 }) => {
-	const creationDateFormatted = creationDate.replace(/[/]/g, '.');
+	const navigate = useNavigate();
 
 	return (
 		<li className={styles.card}>
@@ -30,22 +34,15 @@ export const CourseCard: FC<ICourse> = ({
 			</div>
 			<div className={styles.details}>
 				<p>
-					<span>
-						Authors:
-						{authors}
-					</span>
+					<span>Authors:</span> {getCourseAuthor(authors, updatedAuthors)}
 				</p>
 				<p>
-					<span>Duration:</span> {duration}
+					<span>Duration:</span> {getCourseDuration(duration)}
 				</p>
 				<p>
-					<span>Created:</span> {creationDateFormatted}
+					<span>Created:</span> {getCreationDate(creationDate)}
 				</p>
-				<Button
-					text='Show course'
-					// eslint-disable-next-line @typescript-eslint/no-empty-function
-					onClick={() => {}}
-				/>
+				<Button text='Show course' onClick={() => navigate(`${id}`)} />
 			</div>
 		</li>
 	);

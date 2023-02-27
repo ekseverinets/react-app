@@ -1,46 +1,45 @@
 import React, { useState, useCallback } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import { IPaths } from 'src/constants';
 import InputField from '../../common/InputField/InputField';
 
 import styles from './Login.module.css';
 
-const LoginForm = () => {
+const LoginForm = ({ handleSetUser }) => {
+	const navigate = useNavigate();
+
 	const [values, setValues] = useState({
 		email: '',
 		password: '',
 	});
 
+	const [error, setError] = useState({
+		email: {
+			isReq: true,
+			errorMsg: '',
+		},
+		password: {
+			isReq: true,
+			errorMsg: '',
+		},
+	});
+
+	const [hasAuthorError, setAuthorError] = useState(false);
+
 	const handleInputChange = useCallback((value, name) => {
-		setValues((prev) => ({
-			...prev,
+		setValues((prevState) => ({
+			...prevState,
 			[name]: value,
 		}));
 	}, []);
 
-	const onInputValidate = (value, name) => {
-		setError((prev) => ({
-			...prev,
-			[name]: { ...prev[name], errorMsg: value },
+	const onValidateFunc = (value, name) => {
+		setError((prevState) => ({
+			...prevState,
+			[name]: { ...prevState[name], errorMsg: value },
 		}));
 	};
-
-	const isReq = true;
-	const errorMsg = '';
-	const onValidateFunc = onInputValidate;
-
-	const [error, setError] = useState({
-		email: {
-			isReq,
-			errorMsg,
-			onValidateFunc,
-		},
-		password: {
-			isReq,
-			errorMsg,
-			onValidateFunc,
-		},
-	});
 
 	const validateForm = () => {
 		let isInvalid = false;
@@ -50,13 +49,11 @@ const LoginForm = () => {
 				isInvalid = true;
 			} else if (errObj.isReq && !values[errorItem]) {
 				isInvalid = true;
-				onInputValidate(true, errorItem);
+				onValidateFunc(true, errorItem);
 			}
 		});
 		return !isInvalid;
 	};
-
-	const [submitted, setSubmitted] = useState(false);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -80,11 +77,16 @@ const LoginForm = () => {
 					'Content-Type': 'application/json',
 				},
 			});
-
 			const result = await response.json();
-			console.log(result);
 
-			setSubmitted(true);
+			if (!result.successful) {
+				setAuthorError(true);
+			} else {
+				setAuthorError(false);
+				handleSetUser(true, result.user.name);
+				localStorage.setItem('token', JSON.stringify(result.result));
+				navigate(IPaths.Courses);
+			}
 		}
 	};
 
@@ -99,11 +101,9 @@ const LoginForm = () => {
 					title='Email'
 					value={values.email}
 					onChangeFunc={handleInputChange}
+					onValidateFunc={onValidateFunc}
 					{...error.email}
 				/>
-				{submitted && !values.email && (
-					<span>Please enter an email address</span>
-				)}
 
 				<InputField
 					type='password'
@@ -112,19 +112,25 @@ const LoginForm = () => {
 					title='Password'
 					value={values.password}
 					onChangeFunc={handleInputChange}
+					onValidateFunc={onValidateFunc}
 					{...error.password}
 				/>
-				{submitted && !values.password && <span>Please enter a password</span>}
 
 				<button className={styles.formBtn} type='submit'>
 					Login
 				</button>
 			</form>
+
+			{hasAuthorError && (
+				<div className={styles.formError}>
+					<span>Authentication error! Please try again</span>
+				</div>
+			)}
+
 			<div className={styles.formLink}>
 				If you not have an account you can{' '}
-				<Link to='/registration'>Registration</Link>
+				<Link to={IPaths.Registration}>Registration</Link>
 			</div>
-			{submitted && <Navigate to='/courses' />}
 		</div>
 	);
 };

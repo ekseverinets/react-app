@@ -12,3 +12,42 @@
     padding: 20px 80px;
   }
 }
+
+.authInfo span {
+  font-size: 14px;
+    color: #fff;
+    letter-spacing: 0.2px;
+    font-weight: normal;
+    margin-right: 25px;
+}
+
+.header button {
+  border: 1px solid #fff;
+  color: #fff;
+  margin: 0;
+}
+
+.header button:hover,
+.header button:active {
+  background: #fff;
+  color: #25626c;
+}
+
+.linkWrap {
+  display: inline-flex;
+  padding: 15px 0 15px 20px;
+}
+
+.linkWrap a {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+}
+
+.linkWrap a:hover,
+.linkWrap a.active {
+  text-decoration: underline;
+}

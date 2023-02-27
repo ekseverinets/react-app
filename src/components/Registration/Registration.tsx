@@ -1,52 +1,48 @@
 import React, { useState, useCallback } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import { IPaths } from 'src/constants';
 import InputField from '../../common/InputField/InputField';
 
 import styles from './Registration.module.css';
 
 const RegistrationForm = () => {
+	const navigate = useNavigate();
+
 	const [values, setValues] = useState({
 		name: '',
 		email: '',
 		password: '',
 	});
 
+	const [error, setError] = useState({
+		name: {
+			isReq: true,
+			errorMsg: '',
+		},
+		email: {
+			isReq: true,
+			errorMsg: '',
+		},
+		password: {
+			isReq: true,
+			errorMsg: '',
+		},
+	});
+
 	const handleInputChange = useCallback((value, name) => {
-		setValues((prev) => ({
-			...prev,
+		setValues((prevState) => ({
+			...prevState,
 			[name]: value,
 		}));
 	}, []);
 
-	const onInputValidate = (value, name) => {
-		setError((prev) => ({
-			...prev,
-			[name]: { ...prev[name], errorMsg: value },
+	const onValidateFunc = (value, name) => {
+		setError((prevState) => ({
+			...prevState,
+			[name]: { ...prevState[name], errorMsg: value },
 		}));
 	};
-
-	const isReq = true;
-	const errorMsg = '';
-	const onValidateFunc = onInputValidate;
-
-	const [error, setError] = useState({
-		name: {
-			isReq,
-			errorMsg,
-			onValidateFunc,
-		},
-		email: {
-			isReq,
-			errorMsg,
-			onValidateFunc,
-		},
-		password: {
-			isReq,
-			errorMsg,
-			onValidateFunc,
-		},
-	});
 
 	const validateForm = () => {
 		let isInvalid = false;
@@ -56,13 +52,11 @@ const RegistrationForm = () => {
 				isInvalid = true;
 			} else if (errObj.isReq && !values[errorItem]) {
 				isInvalid = true;
-				onInputValidate(true, errorItem);
+				onValidateFunc(true, errorItem);
 			}
 		});
 		return !isInvalid;
 	};
-
-	const [submitted, setSubmitted] = useState(false);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -89,9 +83,12 @@ const RegistrationForm = () => {
 			});
 
 			const result = await response.json();
-			console.log(result);
 
-			setSubmitted(true);
+			if (result.successful) {
+				navigate(IPaths.Login);
+			} else {
+				console.error('Mayby your email already exists! Try login:)');
+			}
 		}
 	};
 
@@ -107,6 +104,7 @@ const RegistrationForm = () => {
 					min={2}
 					value={values.name}
 					onChangeFunc={handleInputChange}
+					onValidateFunc={onValidateFunc}
 					{...error.name}
 				/>
 
@@ -118,6 +116,7 @@ const RegistrationForm = () => {
 					min={2}
 					value={values.email}
 					onChangeFunc={handleInputChange}
+					onValidateFunc={onValidateFunc}
 					{...error.email}
 				/>
 
@@ -129,6 +128,7 @@ const RegistrationForm = () => {
 					min={6}
 					value={values.password}
 					onChangeFunc={handleInputChange}
+					onValidateFunc={onValidateFunc}
 					{...error.password}
 				/>
 
@@ -137,9 +137,8 @@ const RegistrationForm = () => {
 				</button>
 			</form>
 			<div className={styles.formLink}>
-				If you have an account you can <Link to='/login'> Login</Link>
+				If you have an account you can <Link to={IPaths.Login}> Login</Link>
 			</div>
-			{submitted && <Navigate to='/login' />}
 		</div>
 	);
 };
