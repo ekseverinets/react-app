@@ -9,6 +9,7 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
+import { IUser, ICourse, IAuthor } from '../../models';
 import {
 	MOCKED_COURSES_LIST,
 	MOCKED_AUTHORS_LIST,
@@ -20,14 +21,12 @@ import LoginForm from '../Login/Login';
 import RegistrationForm from '../Registration/Registration';
 import { Courses, CreateCourse, CourseInfo } from '../../components';
 
-import { IUser, ICourse, IAuthor } from '../../models';
-
 export const RootComponent = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
+
 	const [courses, updateCourse] = useState(MOCKED_COURSES_LIST);
 	const [authors, setUpdatedAuthors] = useState<IAuthor[]>(MOCKED_AUTHORS_LIST);
-
 	const [user, setUser] = useState<IUser>({
 		isAuth: false,
 		name: '',
@@ -38,8 +37,8 @@ export const RootComponent = () => {
 	useEffect(() => {
 		const authToken = JSON.parse(localStorage.getItem('token'));
 		if (authToken) {
-			setUser((prev) => ({
-				...prev,
+			setUser((prevState) => ({
+				...prevState,
 				isAuth: true,
 			}));
 		}
@@ -50,8 +49,8 @@ export const RootComponent = () => {
 	}, []);
 
 	const handleSetUser = (auth: boolean, name: string) => {
-		setUser((prev) => ({
-			...prev,
+		setUser((prevState) => ({
+			...prevState,
 			isAuth: auth,
 			name: name,
 		}));

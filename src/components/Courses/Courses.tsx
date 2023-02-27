@@ -1,15 +1,12 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import styles from './Courses.module.css';
-
-import { CourseCard } from './components/CourseCard/CourseCard';
-
-import { IPaths } from 'src/constants';
-
 import { ICourse, IAuthor } from '../../models';
-
+import { IPaths } from 'src/constants';
+import { CourseCard } from './components/CourseCard/CourseCard';
 import { Button } from 'src/common/Button/Button';
+
+import styles from './Courses.module.css';
 
 interface CoursesProps {
 	courses: ICourse[];

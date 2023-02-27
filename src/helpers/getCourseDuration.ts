@@ -1,4 +1,4 @@
-export const getCourseDuration = (mins) => {
+export const getCourseDuration = (mins: number) => {
 	const hours = Math.trunc(mins / 60);
 	const minutes = mins % 60;
 

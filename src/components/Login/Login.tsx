@@ -1,9 +1,8 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import InputField from '../../common/InputField/InputField';
-
 import { IPaths } from 'src/constants';
+import InputField from '../../common/InputField/InputField';
 
 import styles from './Login.module.css';
 
@@ -29,16 +28,16 @@ const LoginForm = ({ handleSetUser }) => {
 	const [hasAuthorError, setAuthorError] = useState(false);
 
 	const handleInputChange = useCallback((value, name) => {
-		setValues((prev) => ({
-			...prev,
+		setValues((prevState) => ({
+			...prevState,
 			[name]: value,
 		}));
 	}, []);
 
 	const onValidateFunc = (value, name) => {
-		setError((prev) => ({
-			...prev,
-			[name]: { ...prev[name], errorMsg: value },
+		setError((prevState) => ({
+			...prevState,
+			[name]: { ...prevState[name], errorMsg: value },
 		}));
 	};
 

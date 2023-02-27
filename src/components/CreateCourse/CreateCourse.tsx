@@ -1,19 +1,15 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { IAuthor } from '../../models';
+import { MOCKED_AUTHORS_LIST, IPaths } from '../../constants';
 import { getCourseDuration, UUID } from '../../helpers';
-
-import styles from './CreateCourse.module.css';
-
 import InputField from '../../common/InputField/InputField';
-
 import { AuthorItem } from './components/AuthorItem/AuthorItem';
 import { CreateAuthorForm } from './components/CreateAuthorForm/CreateAuthorForm';
-
 import { Button } from 'src/common/Button/Button';
 
-import { MOCKED_AUTHORS_LIST, IPaths } from '../../constants';
-import { IAuthor } from '../../models';
+import styles from './CreateCourse.module.css';
 
 const CreateCourse = ({ updateCourse, updateAuthors }) => {
 	const navigate = useNavigate();
@@ -21,7 +17,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 	const [form, setForm] = useState({
 		courseTitle: '',
 		courseDesc: '',
-		courseDuration: '',
+		courseDuration: 0,
 	});
 
 	const [error, setError] = useState({
@@ -43,16 +39,16 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 	const [authors, addAuthor] = useState<IAuthor[]>(MOCKED_AUTHORS_LIST);
 
 	const onInputChange = useCallback((value: string, name: string) => {
-		setForm((prev) => ({
-			...prev,
+		setForm((prevState) => ({
+			...prevState,
 			[name]: value,
 		}));
 	}, []);
 
 	const onValidateFunc = (value: boolean, name: string) => {
-		setError((prev) => ({
-			...prev,
-			[name]: { ...prev[name], errorMsg: value },
+		setError((prevState) => ({
+			...prevState,
+			[name]: { ...prevState[name], errorMsg: value },
 		}));
 	};
 
@@ -86,7 +82,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 		const requestCourseBody = {
 			creationDate: new Date().toLocaleDateString('en-GB'),
 			description: form.courseDesc,
-			duration: parseInt(form.courseDuration),
+			duration: form.courseDuration,
 			id: UUID(),
 			title: form.courseTitle,
 			authors: courseAuthors.map((item) => item.id),

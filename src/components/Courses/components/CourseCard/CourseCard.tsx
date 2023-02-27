@@ -1,15 +1,13 @@
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Button } from '../../../../common/Button/Button';
-
+import { ICourse, IAuthor } from '../../../../models';
 import {
 	getCourseAuthor,
 	getCourseDuration,
 	getCreationDate,
 } from '../../../../helpers';
-
-import { ICourse, IAuthor } from '../../../../models';
+import { Button } from '../../../../common/Button/Button';
 
 import styles from './CourseCard.module.css';
 

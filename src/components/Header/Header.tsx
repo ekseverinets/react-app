@@ -1,13 +1,10 @@
 import React, { FC } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-import { IPaths } from '../../constants';
-
-import { Logo } from './components/Logo/Logo';
-
-import { Button } from 'src/common/Button/Button';
-
 import { IUser } from '../../models';
+import { IPaths } from '../../constants';
+import { Logo } from './components/Logo/Logo';
+import { Button } from 'src/common/Button/Button';
 
 import styles from './Header.module.css';
 
