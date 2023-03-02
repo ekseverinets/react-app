@@ -1,7 +1,7 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useNavigate, Navigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-import { ICourse, IAuthor } from '../../models';
 import { IPaths } from 'src/constants';
 import {
 	getCourseAuthor,
@@ -12,12 +12,12 @@ import { Button } from 'src/common/Button/Button';
 
 import styles from './CourseInfo.module.css';
 
-interface CourseInfoProps {
-	courses: ICourse[];
-	updatedAuthors: IAuthor[];
-}
+import { getCourses } from '../../store/courses/selectors';
+import { getAuthors } from '../../store/authors/selectors';
 
-const CourseInfo: FC<CourseInfoProps> = ({ courses, updatedAuthors }) => {
+const CourseInfo = () => {
+	const courses = useSelector(getCourses);
+	const authors = useSelector(getAuthors);
 	const navigate = useNavigate();
 	const { courseId } = useParams();
 
@@ -46,8 +46,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ courses, updatedAuthors }) => {
 						<span>Created:</span> {getCreationDate(course.creationDate)}
 					</p>
 					<p>
-						<span>Authors:</span>{' '}
-						{getCourseAuthor(course.authors, updatedAuthors)}
+						<span>Authors:</span> {getCourseAuthor(course.authors, authors)}
 					</p>
 				</div>
 			</article>

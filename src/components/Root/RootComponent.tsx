@@ -9,12 +9,8 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
-import { IUser, ICourse, IAuthor } from '../../models';
-import {
-	MOCKED_COURSES_LIST,
-	MOCKED_AUTHORS_LIST,
-	IPaths,
-} from '../../constants';
+import { IUser } from '../../models';
+import { IPaths } from '../../constants';
 
 import { RequireAuth } from './RequireAuth';
 import LoginForm from '../Login/Login';
@@ -25,8 +21,6 @@ export const RootComponent = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const [courses, updateCourse] = useState(MOCKED_COURSES_LIST);
-	const [authors, setUpdatedAuthors] = useState<IAuthor[]>(MOCKED_AUTHORS_LIST);
 	const [user, setUser] = useState<IUser>({
 		isAuth: false,
 		name: '',
@@ -56,14 +50,6 @@ export const RootComponent = () => {
 		}));
 	};
 
-	const handleUpdateCourses = (course: ICourse) => {
-		updateCourse((prevState) => [...prevState, course]);
-	};
-
-	const handleUpdateAuthors = (newAuthor: IAuthor) => {
-		setUpdatedAuthors((prevState) => [...prevState, newAuthor]);
-	};
-
 	return (
 		<Routes>
 			<Route
@@ -79,7 +65,7 @@ export const RootComponent = () => {
 					path={IPaths.Courses}
 					element={
 						<RequireAuth>
-							<Courses courses={courses} updatedAuthors={authors} />
+							<Courses />
 						</RequireAuth>
 					}
 				/>
@@ -87,10 +73,7 @@ export const RootComponent = () => {
 					path={IPaths.CoursesAdd}
 					element={
 						<RequireAuth>
-							<CreateCourse
-								updateCourse={handleUpdateCourses}
-								updateAuthors={handleUpdateAuthors}
-							/>
+							<CreateCourse />
 						</RequireAuth>
 					}
 				/>
@@ -98,7 +81,7 @@ export const RootComponent = () => {
 					path={IPaths.Course}
 					element={
 						<RequireAuth>
-							<CourseInfo courses={courses} updatedAuthors={authors} />
+							<CourseInfo />
 						</RequireAuth>
 					}
 				/>

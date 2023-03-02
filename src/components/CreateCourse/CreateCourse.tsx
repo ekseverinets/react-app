@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { IAuthor } from '../../models';
-import { MOCKED_AUTHORS_LIST, IPaths } from '../../constants';
+import { IPaths } from '../../constants';
 import { getCourseDuration, UUID } from '../../helpers';
 import InputField from '../../common/InputField/InputField';
 import { AuthorItem } from './components/AuthorItem/AuthorItem';
@@ -11,7 +12,12 @@ import { Button } from 'src/common/Button/Button';
 
 import styles from './CreateCourse.module.css';
 
-const CreateCourse = ({ updateCourse, updateAuthors }) => {
+import { getAuthors } from '../../store/authors/selectors';
+import { addAuthorAction } from '../../store/authors/actions';
+import { addCourseAction } from '../../store/courses/actions';
+
+const CreateCourse = () => {
+	const dispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const [form, setForm] = useState({
@@ -35,8 +41,8 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 		},
 	});
 
+	const authors = useSelector(getAuthors);
 	const [courseAuthors, setCourseAuthors] = useState<IAuthor[]>([]);
-	const [authors, addAuthor] = useState<IAuthor[]>(MOCKED_AUTHORS_LIST);
 
 	const onInputChange = useCallback((value: string, name: string) => {
 		setForm((prevState) => ({
@@ -88,7 +94,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 			authors: courseAuthors.map((item) => item.id),
 		};
 
-		updateCourse(requestCourseBody);
+		dispatch(addCourseAction(requestCourseBody));
 		navigate(IPaths.Courses);
 	};
 
@@ -98,8 +104,7 @@ const CreateCourse = ({ updateCourse, updateAuthors }) => {
 			name,
 		};
 
-		addAuthor((prevState) => [...prevState, newAuthor]);
-		updateAuthors(newAuthor);
+		dispatch(addAuthorAction(newAuthor));
 	};
 
 	return (
