@@ -8,7 +8,7 @@ interface AuthProps {
 }
 
 export const RequireAuth: FC<AuthProps> = ({ children }) => {
-	if (!localStorage.getItem('token')) {
+	if (!localStorage.getItem('user-info')) {
 		return <Navigate to={IPaths.Login} />;
 	}
 

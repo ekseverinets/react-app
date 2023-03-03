@@ -1,13 +1,17 @@
 import React, { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { IPaths } from 'src/constants';
 import InputField from '../../common/InputField/InputField';
 
 import styles from './Login.module.css';
+import { AppDispatch } from 'src/store';
+import { loginUser } from 'src/store/user/actions';
 
-const LoginForm = ({ handleSetUser }) => {
+const LoginForm = () => {
 	const navigate = useNavigate();
+	const dispatch: AppDispatch = useDispatch();
 
 	const [values, setValues] = useState({
 		email: '',
@@ -25,7 +29,7 @@ const LoginForm = ({ handleSetUser }) => {
 		},
 	});
 
-	const [hasAuthorError, setAuthorError] = useState(false);
+	const [hasAuthError, setAuthError] = useState(false);
 
 	const handleInputChange = useCallback((value, name) => {
 		setValues((prevState) => ({
@@ -70,23 +74,17 @@ const LoginForm = ({ handleSetUser }) => {
 				password: values.password,
 			};
 
-			const response = await fetch('http://localhost:4000/login', {
-				method: 'POST',
-				body: JSON.stringify(user),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-			const result = await response.json();
+			// if (!result.successful) {
+			// 	setAuthError(true);
+			// } else {
+			// 	setAuthorror(false);
+			// 	handleSetUser(true, result.user.name);
+			// 	localStorage.setItem('token', JSON.stringify(result.result));
+			// 	navigate(IPaths.Courses);
+			// }
 
-			if (!result.successful) {
-				setAuthorError(true);
-			} else {
-				setAuthorError(false);
-				handleSetUser(true, result.user.name);
-				localStorage.setItem('token', JSON.stringify(result.result));
-				navigate(IPaths.Courses);
-			}
+			dispatch(loginUser(user));
+			navigate(IPaths.Courses);
 		}
 	};
 
@@ -121,7 +119,7 @@ const LoginForm = ({ handleSetUser }) => {
 				</button>
 			</form>
 
-			{hasAuthorError && (
+			{hasAuthError && (
 				<div className={styles.formError}>
 					<span>Authentication error! Please try again</span>
 				</div>

@@ -7,13 +7,9 @@ import logo from '../../../../assets/logo.png';
 
 import styles from './Logo.module.css';
 
-interface LogoProps {
-	auth: boolean;
-}
-
-export const Logo: FC<LogoProps> = (auth) => {
+export const Logo = () => {
 	return (
-		<Link to={auth ? IPaths.Courses : IPaths.Login}>
+		<Link to={IPaths.Courses}>
 			<div className={styles.logo}>
 				<img src={logo} alt='Logo' />
 			</div>

@@ -1,13 +1,12 @@
 import React, { FC } from 'react';
 import { Outlet } from 'react-router-dom';
 
-import { IHeader } from './components/Header/Header';
 import { Header } from './components';
 
-const App: FC<IHeader> = ({ userData, handleSetUser }) => {
+const App = () => {
 	return (
 		<>
-			<Header userData={userData} handleSetUser={handleSetUser} />
+			<Header />
 			<Outlet />
 		</>
 	);

@@ -21,45 +21,10 @@ export const RootComponent = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
 
-	const [user, setUser] = useState<IUser>({
-		isAuth: false,
-		name: '',
-		email: '',
-		token: '',
-	});
-
-	useEffect(() => {
-		const authToken = JSON.parse(localStorage.getItem('token'));
-		if (authToken) {
-			setUser((prevState) => ({
-				...prevState,
-				isAuth: true,
-			}));
-		}
-
-		if (location.pathname === IPaths.Home) {
-			navigate(IPaths.Courses);
-		}
-	}, []);
-
-	const handleSetUser = (auth: boolean, name: string) => {
-		setUser((prevState) => ({
-			...prevState,
-			isAuth: auth,
-			name: name,
-		}));
-	};
-
 	return (
 		<Routes>
-			<Route
-				path={IPaths.Home}
-				element={<App userData={user} handleSetUser={handleSetUser} />}
-			>
-				<Route
-					path={IPaths.Login}
-					element={<LoginForm handleSetUser={handleSetUser} />}
-				/>
+			<Route path={IPaths.Home} element={<App />}>
+				<Route path={IPaths.Login} element={<LoginForm />} />
 				<Route path={IPaths.Registration} element={<RegistrationForm />} />
 				<Route
 					path={IPaths.Courses}
