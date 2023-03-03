@@ -24,11 +24,11 @@ const Courses = () => {
 		dispatch(fetchCourses());
 	}, []);
 
-	console.log(courses);
+	const coursesData = courses.courses;
 
 	return (
 		<>
-			{courses.length === 0 && courses.loading ? (
+			{courses.loading ? (
 				<h2>Loading courses</h2>
 			) : (
 				<section>
@@ -39,13 +39,13 @@ const Courses = () => {
 						/>
 					</div>
 					<ul className={styles.coursesList}>
-						{/* {courses.courses.map((course) => (
+						{coursesData.map((course) => (
 							<CourseCard
 								key={course.id}
 								{...course}
 								updatedAuthors={authors}
 							/>
-						))} */}
+						))}
 					</ul>
 				</section>
 			)}

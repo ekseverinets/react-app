@@ -15,9 +15,10 @@ import styles from './CreateCourse.module.css';
 import { getAuthors } from '../../store/authors/selectors';
 import { addAuthorAction } from '../../store/authors/actions';
 import { addCourseAction } from '../../store/courses/actions';
+import { AppDispatch } from 'src/store';
 
 const CreateCourse = () => {
-	const dispatch = useDispatch();
+	const dispatch: AppDispatch = useDispatch();
 	const navigate = useNavigate();
 
 	const [form, setForm] = useState({
@@ -86,16 +87,16 @@ const CreateCourse = () => {
 		}
 
 		const requestCourseBody = {
-			creationDate: new Date().toLocaleDateString('en-GB'),
+			//creationDate: new Date().toLocaleDateString('en-GB'),
+			title: form.courseTitle,
 			description: form.courseDesc,
 			duration: form.courseDuration,
-			id: UUID(),
-			title: form.courseTitle,
+			//id: UUID(),
 			authors: courseAuthors.map((item) => item.id),
 		};
 
 		dispatch(addCourseAction(requestCourseBody));
-		navigate(IPaths.Courses);
+		//navigate(IPaths.Courses);
 	};
 
 	const handleAddAuthor = (name: string) => {

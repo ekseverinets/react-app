@@ -21,7 +21,7 @@ const CourseInfo = () => {
 	const navigate = useNavigate();
 	const { courseId } = useParams();
 
-	const course = courses.find(({ id }) => id === courseId);
+	const course = courses.courses.find(({ id }) => id === courseId);
 
 	if (!course) {
 		return <Navigate to={IPaths.Courses} />;
