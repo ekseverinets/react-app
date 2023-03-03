@@ -44,7 +44,7 @@ export const loginUser = (userToLogin) => {
 			const response = await apiClient.post(`/login`, userToLogin);
 			console.log(response.data);
 
-			localStorage.setItem('user-info', response.data.result);
+			localStorage.setItem('token', response.data.result);
 			const secondResponse = await apiClient.get('/users/me', {
 				headers: { Authorization: response.data.result },
 			});
@@ -66,7 +66,7 @@ export const loginUser = (userToLogin) => {
 export const logoutUser = () => {
 	return async (dispatch) => {
 		try {
-			const currentUser = localStorage.getItem('user-info');
+			const currentUser = localStorage.getItem('token');
 			dispatch({ type: UserActionTypes.LOGOUT_USER });
 			await apiClient.delete('/logout', {
 				headers: { Authorization: `${currentUser}` },

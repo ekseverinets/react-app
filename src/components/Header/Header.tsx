@@ -17,7 +17,7 @@ const Header = () => {
 
 	const { result } = useSelector(getUser);
 
-	const localData = localStorage.getItem('user-info') || '';
+	const localData = localStorage.getItem('token');
 	console.log(result);
 
 	useEffect(() => {

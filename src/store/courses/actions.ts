@@ -21,7 +21,7 @@ export const fetchCourses = () => async (dispatch) => {
 export const addCourseAction = (anotherCourse) => async (dispatch) => {
 	try {
 		console.log(anotherCourse);
-		const currentUser = localStorage.getItem('user-info');
+		const currentUser = localStorage.getItem('token');
 
 		const response = await apiClient.post('/courses/add', anotherCourse, {
 			headers: {
