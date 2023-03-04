@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getCourses } from '../../store/courses/selectors';
+import { fetchCourses } from 'src/store/courses/actions';
 
 import { IPaths } from 'src/constants';
 import { CourseCard } from './components/CourseCard/CourseCard';
@@ -8,27 +11,20 @@ import { Button } from 'src/common/Button/Button';
 
 import styles from './Courses.module.css';
 
-import { getCourses } from '../../store/courses/selectors';
-import { getAuthors } from '../../store/authors/selectors';
-import { fetchCourses } from 'src/store/courses/actions';
-import { AppDispatch } from 'src/store';
-
 const Courses = () => {
-	const courses = useSelector(getCourses);
-	const authors = useSelector(getAuthors);
-
-	const dispatch: AppDispatch = useDispatch();
+	const { courses, loading } = useAppSelector(getCourses);
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		dispatch(fetchCourses());
 	}, []);
 
-	const coursesData = courses.courses;
+	console.log(courses);
 
 	return (
 		<>
-			{courses.loading ? (
+			{loading ? (
 				<h2>Loading courses</h2>
 			) : (
 				<section>
@@ -39,12 +35,8 @@ const Courses = () => {
 						/>
 					</div>
 					<ul className={styles.coursesList}>
-						{coursesData.map((course) => (
-							<CourseCard
-								key={course.id}
-								{...course}
-								updatedAuthors={authors}
-							/>
+						{courses.map((course) => (
+							<CourseCard key={course.id} {...course} />
 						))}
 					</ul>
 				</section>

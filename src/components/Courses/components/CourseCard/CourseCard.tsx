@@ -1,33 +1,27 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
-import { ICourse, IAuthor } from '../../../../models';
-import {
-	getCourseAuthor,
-	getCourseDuration,
-	getCreationDate,
-} from '../../../../helpers';
+import { useAppDispatch } from '../../../../store/hooks';
+import { getCourseDuration, getCreationDate } from '../../../../helpers';
+import { deleteCourseAction } from '../../../../store/courses/actions';
+
 import { Button } from '../../../../common/Button/Button';
 
 import styles from './CourseCard.module.css';
-import { deleteCourseAction } from '../../../../store/courses/actions';
 
-interface ICourseCardProps extends ICourse {
-	updatedAuthors: IAuthor[];
-}
-
-export const CourseCard: FC<ICourseCardProps> = ({
+export const CourseCard = ({
 	id,
 	title,
 	description,
 	duration,
 	creationDate,
 	authors,
-	updatedAuthors,
 }) => {
-	const dispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
+
+	// const authors = useAppSelector(getAuthors);
+	console.log(authors);
 
 	return (
 		<li className={styles.card}>
@@ -37,7 +31,7 @@ export const CourseCard: FC<ICourseCardProps> = ({
 			</div>
 			<div className={styles.details}>
 				<p>
-					<span>Authors:</span> {getCourseAuthor(authors, updatedAuthors)}
+					{/* <span>Authors:</span> {getCourseAuthor(authors, updatedAuthors)} */}
 				</p>
 				<p>
 					<span>Duration:</span> {getCourseDuration(duration)}

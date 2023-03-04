@@ -1,33 +1,35 @@
-import { CourseActionTypes } from './types';
+import { CourseActionTypes, CoursesAction } from './types';
+import { ICourse } from '../../models';
+
+export interface ICoursesInitialState {
+	courses: ICourse[];
+	loading: boolean;
+	error: string | null;
+}
 
 const coursesInitialState = {
 	courses: [],
 	loading: false,
 	error: null,
-	anotherCourse: {
-		title: '',
-		description: '',
-		duration: 0,
-		authors: [],
-	},
 };
 
-export const coursesReducer = (state = coursesInitialState, action) => {
+export const coursesReducer = (
+	state: ICoursesInitialState = coursesInitialState,
+	action: CoursesAction
+): ICoursesInitialState => {
 	switch (action.type) {
-		// case CourseActionTypes.FETCH_COURSES:
-		// 	return { loading: true, courses: [] };
-
-		case CourseActionTypes.FETCH_COURSES_SUCCESS:
-			return { loading: false, courses: action.payload };
+		case CourseActionTypes.FETCH_COURSES:
+			return {
+				error: null,
+				loading: false,
+				courses: action.payload,
+			};
 
 		case CourseActionTypes.FETCH_COURSES_ERROR:
 			return { loading: false, error: action.payload, courses: [] };
 
 		case CourseActionTypes.ADD_COURSE:
-			return {
-				loading: false,
-				courses: [...state.courses, action.payload],
-			};
+			return { error: null, loading: false, courses: [] };
 
 		case CourseActionTypes.DELETE_COURSE: {
 			const deletedCourseId = state.courses.findIndex(
@@ -35,7 +37,7 @@ export const coursesReducer = (state = coursesInitialState, action) => {
 			);
 			const courses = [...state.courses];
 			courses.splice(deletedCourseId, 1);
-			return { loading: false, courses };
+			return { error: null, loading: false, courses };
 		}
 
 		default:

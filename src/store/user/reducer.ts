@@ -1,41 +1,38 @@
-import { UserActionTypes } from './types';
+import { UserAction, UserActionTypes } from './types';
 
-const initialState = {
+const userInitialState = {
 	result: {
-		successful: false,
 		result: '',
+		successful: false,
 	},
-	loading: false,
 	error: null,
 };
 
-export const userReducer = (state = initialState, action) => {
+export const userReducer = (state = userInitialState, action: UserAction) => {
 	switch (action.type) {
-		case UserActionTypes.FETCH_USER_SUCCESS:
+		case UserActionTypes.FETCH_USER:
 			return {
-				loading: false,
+				error: null,
 				result: action.payload,
 			};
 		case UserActionTypes.FETCH_USER_ERROR:
 			return {
-				loading: false,
 				error: action.payload,
 				result: { successful: false, result: '' },
 			};
-		case UserActionTypes.REGISTER_USER_SUCCESS:
+		case UserActionTypes.REGISTER_USER:
 			return {
-				loading: false,
+				error: null,
 				result: action.payload,
 			};
 		case UserActionTypes.REGISTER_USER_ERROR:
 			return {
-				loading: false,
 				error: action.payload,
 				result: { successful: false, result: '' },
 			};
 		case UserActionTypes.LOGOUT_USER:
 			return {
-				loading: false,
+				error: null,
 				result: { successful: false, result: '' },
 			};
 		default:

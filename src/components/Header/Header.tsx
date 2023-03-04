@@ -1,27 +1,25 @@
-import React, { FC, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { fetchUser, logoutUser } from '../../store/user/actions';
+import { getUser } from 'src/store/user/selectors';
 
 import { IPaths } from '../../constants';
 import { Logo } from './components/Logo/Logo';
 import { Button } from 'src/common/Button/Button';
 
 import styles from './Header.module.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from 'src/store';
-import { fetchUser, logoutUser } from 'src/store/user/actions';
-import { getUser } from 'src/store/user/selectors';
 
 const Header = () => {
-	const dispatch: AppDispatch = useDispatch();
+	const { result } = useAppSelector(getUser);
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	const { result } = useSelector(getUser);
-
-	const localData = localStorage.getItem('token');
-	console.log(result);
+	const token = localStorage.getItem('token');
 
 	useEffect(() => {
-		dispatch(fetchUser(localData));
+		dispatch(fetchUser(token));
 	}, []);
 
 	const handleLogout = () => {
@@ -32,29 +30,36 @@ const Header = () => {
 
 	return (
 		<header className={styles.header}>
-			<Logo />
-			<div className={styles.authInfo}>
-				<span>{result.name}</span>
-				<Button text='Logout' onClick={handleLogout} />
-			</div>
-			<div>
-				<div className={styles.linkWrap}>
-					<NavLink
-						to={IPaths.Registration}
-						className={({ isActive }) => (isActive ? styles.active : undefined)}
-					>
-						Registration
-					</NavLink>
+			<Logo auth={result.successful} />
+			{result.successful ? (
+				<div className={styles.authInfo}>
+					{/* <span>{result.name}</span> */}
+					<Button text='Logout' onClick={handleLogout} />
 				</div>
-				<div className={styles.linkWrap}>
-					<NavLink
-						to={IPaths.Login}
-						className={({ isActive }) => (isActive ? styles.active : undefined)}
-					>
-						Login
-					</NavLink>
+			) : (
+				<div>
+					<div className={styles.linkWrap}>
+						<NavLink
+							to={IPaths.Registration}
+							className={({ isActive }) =>
+								isActive ? styles.active : undefined
+							}
+						>
+							Registration
+						</NavLink>
+					</div>
+					<div className={styles.linkWrap}>
+						<NavLink
+							to={IPaths.Login}
+							className={({ isActive }) =>
+								isActive ? styles.active : undefined
+							}
+						>
+							Login
+						</NavLink>
+					</div>
 				</div>
-			</div>
+			)}
 		</header>
 	);
 };

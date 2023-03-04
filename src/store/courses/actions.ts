@@ -1,13 +1,13 @@
-import { CourseActionTypes } from './types';
+import { CourseActionTypes, ICourseCard } from './types';
 import apiClient from '../../services';
+import { AppDispatch } from '../index';
 
-export const fetchCourses = () => async (dispatch) => {
+export const fetchCourses = () => async (dispatch: AppDispatch) => {
 	try {
-		//dispatch({ type: CourseActionTypes.FETCH_COURSES });
 		const response = await apiClient.get('/courses/all');
 
 		dispatch({
-			type: CourseActionTypes.FETCH_COURSES_SUCCESS,
+			type: CourseActionTypes.FETCH_COURSES,
 			payload: response.data.result,
 		});
 	} catch (error) {
@@ -18,31 +18,33 @@ export const fetchCourses = () => async (dispatch) => {
 	}
 };
 
-export const addCourseAction = (anotherCourse) => async (dispatch) => {
-	try {
-		console.log(anotherCourse);
-		const currentUser = localStorage.getItem('token');
+export const addCourseAction =
+	(anotherCourse: ICourseCard) => async (dispatch: AppDispatch) => {
+		try {
+			const currentUser = localStorage.getItem('token');
 
-		const response = await apiClient.post('/courses/add', anotherCourse, {
-			headers: {
-				accept: '*/*',
-				'Content-Type': 'application/json',
-				Authorization: `${currentUser}`,
-			},
-		});
+			await apiClient.post('/courses/add', anotherCourse, {
+				headers: {
+					'Content-Type': 'application/json',
+					Authorization: `${currentUser}`,
+				},
+			});
 
-		dispatch({
-			type: CourseActionTypes.ADD_COURSE,
-			payload: anotherCourse,
-		});
+			dispatch({
+				type: CourseActionTypes.ADD_COURSE,
+				payload: anotherCourse,
+			});
+		} catch (error) {
+			const [errorMessage] = error.response.data.errors;
 
-		console.log(response);
-	} catch (error) {
-		console.log(`${error}`);
-	}
-};
+			dispatch({
+				type: CourseActionTypes.FETCH_COURSES_ERROR,
+				payload: `${errorMessage}`,
+			});
+		}
+	};
 
-export const deleteCourseAction = (payload) => ({
+export const deleteCourseAction = (payload: { id: string }) => ({
 	type: CourseActionTypes.DELETE_COURSE,
 	payload,
 });

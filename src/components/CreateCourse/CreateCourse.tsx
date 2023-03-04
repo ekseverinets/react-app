@@ -1,6 +1,10 @@
 import React, { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getAuthors } from '../../store/authors/selectors';
+import { addAuthorAction } from '../../store/authors/actions';
+import { addCourseAction } from '../../store/courses/actions';
 
 import { IAuthor } from '../../models';
 import { IPaths } from '../../constants';
@@ -12,13 +16,8 @@ import { Button } from 'src/common/Button/Button';
 
 import styles from './CreateCourse.module.css';
 
-import { getAuthors } from '../../store/authors/selectors';
-import { addAuthorAction } from '../../store/authors/actions';
-import { addCourseAction } from '../../store/courses/actions';
-import { AppDispatch } from 'src/store';
-
 const CreateCourse = () => {
-	const dispatch: AppDispatch = useDispatch();
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	const [form, setForm] = useState({
@@ -42,7 +41,7 @@ const CreateCourse = () => {
 		},
 	});
 
-	const authors = useSelector(getAuthors);
+	const authors = useAppSelector(getAuthors);
 	const [courseAuthors, setCourseAuthors] = useState<IAuthor[]>([]);
 
 	const onInputChange = useCallback((value: string, name: string) => {
@@ -87,13 +86,15 @@ const CreateCourse = () => {
 		}
 
 		const requestCourseBody = {
-			//creationDate: new Date().toLocaleDateString('en-GB'),
+			creationDate: new Date().toLocaleDateString('en-GB'),
 			title: form.courseTitle,
 			description: form.courseDesc,
 			duration: form.courseDuration,
-			//id: UUID(),
+			id: UUID(),
 			authors: courseAuthors.map((item) => item.id),
 		};
+
+		console.log(requestCourseBody.authors);
 
 		dispatch(addCourseAction(requestCourseBody));
 		//navigate(IPaths.Courses);

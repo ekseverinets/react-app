@@ -1,18 +1,17 @@
 import React, { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { useAppDispatch } from '../../store/hooks';
+import { registerUser } from 'src/store/user/actions';
 
 import { IPaths } from 'src/constants';
 import InputField from '../../common/InputField/InputField';
 
 import styles from './Registration.module.css';
 
-import { AppDispatch } from 'src/store';
-import { registerUser } from 'src/store/user/actions';
-
 const RegistrationForm = () => {
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
-	const dispatch: AppDispatch = useDispatch();
 
 	const [values, setValues] = useState({
 		name: '',
@@ -79,24 +78,14 @@ const RegistrationForm = () => {
 				password: values.password,
 			};
 
-			// const response = await fetch('http://localhost:4000/register', {
-			// 	method: 'POST',
-			// 	body: JSON.stringify(newUser),
-			// 	headers: {
-			// 		'Content-Type': 'application/json',
-			// 	},
-			// });
-
-			// const result = await response.json();
+			dispatch(registerUser(newUser));
+			navigate(IPaths.Login);
 
 			// if (result.successful) {
 			// 	navigate(IPaths.Login);
 			// } else {
 			// 	console.error('Mayby your email already exists! Try login:)');
 			// }
-			dispatch(registerUser(newUser));
-
-			//navigate(IPaths.Login);
 		}
 	};
 

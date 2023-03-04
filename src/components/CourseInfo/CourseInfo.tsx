@@ -1,6 +1,9 @@
 import React from 'react';
 import { useNavigate, Navigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+
+import { useAppSelector } from '../../store/hooks';
+import { getCourses } from '../../store/courses/selectors';
+import { getAuthors } from '../../store/authors/selectors';
 
 import { IPaths } from 'src/constants';
 import {
@@ -12,12 +15,9 @@ import { Button } from 'src/common/Button/Button';
 
 import styles from './CourseInfo.module.css';
 
-import { getCourses } from '../../store/courses/selectors';
-import { getAuthors } from '../../store/authors/selectors';
-
 const CourseInfo = () => {
-	const courses = useSelector(getCourses);
-	const authors = useSelector(getAuthors);
+	const courses = useAppSelector(getCourses);
+	const authors = useAppSelector(getAuthors);
 	const navigate = useNavigate();
 	const { courseId } = useParams();
 

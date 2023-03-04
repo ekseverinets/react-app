@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import App from 'src/App';
-
+import React, { useEffect } from 'react';
 import {
 	Routes,
 	Route,
@@ -9,10 +7,10 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
-import { IUser } from '../../models';
 import { IPaths } from '../../constants';
 
 import { RequireAuth } from './RequireAuth';
+import App from '../../App';
 import LoginForm from '../Login/Login';
 import RegistrationForm from '../Registration/Registration';
 import { Courses, CreateCourse, CourseInfo } from '../../components';
@@ -20,6 +18,12 @@ import { Courses, CreateCourse, CourseInfo } from '../../components';
 export const RootComponent = () => {
 	const location = useLocation();
 	const navigate = useNavigate();
+
+	useEffect(() => {
+		if (location.pathname === IPaths.Home) {
+			navigate(IPaths.Courses);
+		}
+	}, []);
 
 	return (
 		<Routes>

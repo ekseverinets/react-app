@@ -1,17 +1,17 @@
-import React, { useState, useCallback } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { useAppDispatch } from '../../store/hooks';
+import { loginUser } from 'src/store/user/actions';
 
 import { IPaths } from 'src/constants';
 import InputField from '../../common/InputField/InputField';
 
 import styles from './Login.module.css';
-import { AppDispatch } from 'src/store';
-import { loginUser } from 'src/store/user/actions';
 
 const LoginForm = () => {
 	const navigate = useNavigate();
-	const dispatch: AppDispatch = useDispatch();
+	const dispatch = useAppDispatch();
 
 	const [values, setValues] = useState({
 		email: '',
@@ -29,7 +29,13 @@ const LoginForm = () => {
 		},
 	});
 
-	const [hasAuthError, setAuthError] = useState(false);
+	const [hasAuthorError, setAuthorError] = useState(false);
+
+	useEffect(() => {
+		if (localStorage.getItem('token')) {
+			navigate(IPaths.Courses);
+		}
+	}, []);
 
 	const handleInputChange = useCallback((value, name) => {
 		setValues((prevState) => ({
@@ -74,16 +80,14 @@ const LoginForm = () => {
 				password: values.password,
 			};
 
-			// if (!result.successful) {
-			// 	setAuthError(true);
-			// } else {
-			// 	setAuthorror(false);
-			// 	handleSetUser(true, result.user.name);
-			// 	localStorage.setItem('token', JSON.stringify(result.result));
-			// 	navigate(IPaths.Courses);
-			// }
-
 			dispatch(loginUser(user));
+
+			if (localStorage.getItem('token')) {
+				setAuthorError(false);
+			} else {
+				setAuthorError(true);
+			}
+
 			navigate(IPaths.Courses);
 		}
 	};
@@ -119,7 +123,7 @@ const LoginForm = () => {
 				</button>
 			</form>
 
-			{hasAuthError && (
+			{hasAuthorError && (
 				<div className={styles.formError}>
 					<span>Authentication error! Please try again</span>
 				</div>

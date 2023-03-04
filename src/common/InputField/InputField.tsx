@@ -14,7 +14,7 @@ const validationHandler = (e, props) => {
 		msg = `${props.title} must be at least ${props.min} characters long.`;
 	} else if (props.type === 'number' && parseInt(value) < 1) {
 		msg = 'Duration should be more than 0 minutes';
-	} else if (props.type === 'password' && !/^[a-zA-Z]*$/g.test(value)) {
+	} else if (props.type === 'password' && !/^[a-zA-Z0-9]*$/g.test(value)) {
 		msg = 'Please enter only letters';
 	}
 	props.onValidateFunc(msg, name);
@@ -34,7 +34,14 @@ const InputField = (props) => {
 			<label>{props.title}</label>
 			<input
 				{...inputProps}
-				onChange={(e) => props.onChangeFunc(e.target.value, e.target.name, e)}
+				onChange={(e) => {
+					const inputValue =
+						e.target.type === 'number'
+							? Number(e.target.value)
+							: e.target.value;
+
+					props.onChangeFunc(inputValue, e.target.name, e);
+				}}
 				onBlur={(e) => validationHandler(e, props)}
 			/>
 			{props.errorMsg && (
