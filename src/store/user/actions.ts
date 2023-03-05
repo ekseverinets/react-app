@@ -1,6 +1,7 @@
-import { UserActionTypes } from './types';
+import { UserAction, UserActionTypes } from './types';
 import apiClient from '../../services';
-import { AppDispatch } from '../index';
+import { AppDispatch, RootState } from '../index';
+import { ThunkAction } from 'redux-thunk';
 
 export const fetchUser = (authToken: string) => {
 	return async (dispatch: AppDispatch) => {
@@ -24,7 +25,7 @@ export const registerUser = (userToRegister: {
 	name: string;
 	email: string;
 	password: string;
-}) => {
+}): ThunkAction<Promise<boolean>, RootState, undefined, UserAction> => {
 	return async (dispatch: AppDispatch) => {
 		try {
 			const response = await apiClient.post(`/register`, userToRegister);
@@ -34,16 +35,21 @@ export const registerUser = (userToRegister: {
 				type: UserActionTypes.REGISTER_USER,
 				payload: response.data.result,
 			});
+			return true;
 		} catch (error) {
 			dispatch({
 				type: UserActionTypes.REGISTER_USER_ERROR,
 				payload: `${error}`,
 			});
+			return false;
 		}
 	};
 };
 
-export const loginUser = (userToLogin: { email: string; password: string }) => {
+export const loginUser = (userToLogin: {
+	email: string;
+	password: string;
+}): ThunkAction<Promise<boolean>, RootState, undefined, UserAction> => {
 	return async (dispatch: AppDispatch) => {
 		try {
 			const response = await apiClient.post(`/login`, userToLogin);
@@ -53,30 +59,17 @@ export const loginUser = (userToLogin: { email: string; password: string }) => {
 				headers: { Authorization: response.data.result },
 			});
 
-			const name =
-				userResponse.data.result.name === null
-					? 'admin'
-					: userResponse.data.result.name;
-
-			console.log(userResponse.data);
-
-			const updatedPayload = {
-				...userResponse.data,
-				result: {
-					...userResponse.data.result,
-					name: name,
-				},
-			};
-
 			dispatch({
 				type: UserActionTypes.FETCH_USER,
-				payload: updatedPayload,
+				payload: userResponse.data,
 			});
+			return true;
 		} catch (error) {
 			dispatch({
 				type: UserActionTypes.FETCH_USER_ERROR,
 				payload: `${error}`,
 			});
+			return false;
 		}
 	};
 };
@@ -84,10 +77,10 @@ export const loginUser = (userToLogin: { email: string; password: string }) => {
 export const logoutUser = () => {
 	return async (dispatch: AppDispatch) => {
 		try {
-			const currentUser = localStorage.getItem('token');
+			const token = localStorage.getItem('token');
 			dispatch({ type: UserActionTypes.LOGOUT_USER });
 			await apiClient.delete('/logout', {
-				headers: { Authorization: `${currentUser}` },
+				headers: { Authorization: `${token}` },
 			});
 		} catch (error) {
 			console.log(`${error}`);

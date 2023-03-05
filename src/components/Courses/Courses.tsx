@@ -12,7 +12,7 @@ import { Button } from 'src/common/Button/Button';
 import styles from './Courses.module.css';
 
 const Courses = () => {
-	const { courses, loading } = useAppSelector(getCourses);
+	const { courses } = useAppSelector(getCourses);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -20,27 +20,21 @@ const Courses = () => {
 		dispatch(fetchCourses());
 	}, []);
 
-	console.log(courses);
-
 	return (
 		<>
-			{loading ? (
-				<h2>Loading courses</h2>
-			) : (
-				<section>
-					<div className={styles.btnWrap}>
-						<Button
-							text='Add new course'
-							onClick={() => navigate(IPaths.CoursesAdd)}
-						/>
-					</div>
-					<ul className={styles.coursesList}>
-						{courses.map((course) => (
-							<CourseCard key={course.id} {...course} />
-						))}
-					</ul>
-				</section>
-			)}
+			<section>
+				<div className={styles.btnWrap}>
+					<Button
+						text='Add new course'
+						onClick={() => navigate(IPaths.CoursesAdd)}
+					/>
+				</div>
+				<ul className={styles.coursesList}>
+					{courses.map((course) => (
+						<CourseCard key={course.id} {...course} />
+					))}
+				</ul>
+			</section>
 		</>
 	);
 };

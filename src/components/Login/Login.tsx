@@ -29,7 +29,7 @@ const LoginForm = () => {
 		},
 	});
 
-	const [hasAuthorError, setAuthorError] = useState(false);
+	const [hasAuthError, setAuthError] = useState(false);
 
 	useEffect(() => {
 		if (localStorage.getItem('token')) {
@@ -80,15 +80,12 @@ const LoginForm = () => {
 				password: values.password,
 			};
 
-			dispatch(loginUser(user));
-
-			if (localStorage.getItem('token')) {
-				setAuthorError(false);
+			const loginSuccessful = await dispatch(loginUser(user));
+			if (loginSuccessful) {
+				navigate(IPaths.Courses);
 			} else {
-				setAuthorError(true);
+				setAuthError(true);
 			}
-
-			navigate(IPaths.Courses);
 		}
 	};
 
@@ -123,7 +120,7 @@ const LoginForm = () => {
 				</button>
 			</form>
 
-			{hasAuthorError && (
+			{hasAuthError && (
 				<div className={styles.formError}>
 					<span>Authentication error! Please try again</span>
 				</div>

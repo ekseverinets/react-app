@@ -34,6 +34,8 @@ const RegistrationForm = () => {
 		},
 	});
 
+	const [hasRegistrationError, setRegistrationError] = useState(false);
+
 	const handleInputChange = useCallback((value, name) => {
 		setValues((prevState) => ({
 			...prevState,
@@ -78,14 +80,12 @@ const RegistrationForm = () => {
 				password: values.password,
 			};
 
-			dispatch(registerUser(newUser));
-			navigate(IPaths.Login);
-
-			// if (result.successful) {
-			// 	navigate(IPaths.Login);
-			// } else {
-			// 	console.error('Mayby your email already exists! Try login:)');
-			// }
+			const registrationSuccessful = await dispatch(registerUser(newUser));
+			if (registrationSuccessful) {
+				navigate(IPaths.Login);
+			} else {
+				setRegistrationError(true);
+			}
 		}
 	};
 
@@ -133,6 +133,13 @@ const RegistrationForm = () => {
 					Registration
 				</button>
 			</form>
+
+			{hasRegistrationError && (
+				<div className={styles.formError}>
+					<span>Mayby your email already exists! Try login</span>
+				</div>
+			)}
+
 			<div className={styles.formLink}>
 				If you have an account you can <Link to={IPaths.Login}> Login</Link>
 			</div>

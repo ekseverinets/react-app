@@ -33,7 +33,13 @@ const Header = () => {
 			<Logo auth={result.successful} />
 			{result.successful ? (
 				<div className={styles.authInfo}>
-					{/* <span>{result.name}</span> */}
+					<span>
+						{typeof result.result === 'object'
+							? result.result.role === 'user'
+								? result.result.name
+								: 'admin'
+							: ''}
+					</span>
 					<Button text='Logout' onClick={handleLogout} />
 				</div>
 			) : (
