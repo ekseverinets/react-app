@@ -2,6 +2,7 @@ import { UserAction, UserActionTypes } from './types';
 import apiClient from '../../services';
 import { AppDispatch, RootState } from '../index';
 import { ThunkAction } from 'redux-thunk';
+import { IUser } from '../../models';
 
 export const fetchUser = (authToken: string) => {
 	return async (dispatch: AppDispatch) => {
@@ -21,11 +22,9 @@ export const fetchUser = (authToken: string) => {
 	};
 };
 
-export const registerUser = (userToRegister: {
-	name: string;
-	email: string;
-	password: string;
-}): ThunkAction<Promise<boolean>, RootState, undefined, UserAction> => {
+export const registerUser = (
+	userToRegister: IUser
+): ThunkAction<Promise<boolean>, RootState, undefined, UserAction> => {
 	return async (dispatch: AppDispatch) => {
 		try {
 			const response = await apiClient.post(`/register`, userToRegister);
@@ -46,10 +45,9 @@ export const registerUser = (userToRegister: {
 	};
 };
 
-export const loginUser = (userToLogin: {
-	email: string;
-	password: string;
-}): ThunkAction<Promise<boolean>, RootState, undefined, UserAction> => {
+export const loginUser = (
+	userToLogin: IUser
+): ThunkAction<Promise<boolean>, RootState, undefined, UserAction> => {
 	return async (dispatch: AppDispatch) => {
 		try {
 			const response = await apiClient.post(`/login`, userToLogin);

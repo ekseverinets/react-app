@@ -26,12 +26,7 @@ export const coursesReducer = (
 			return { courses: [] };
 
 		case CourseActionTypes.DELETE_COURSE: {
-			const deletedCourseId = state.courses.findIndex(
-				({ id }) => id === action.payload
-			);
-			const courses = [...state.courses];
-			courses.splice(deletedCourseId, 1);
-			return { courses };
+			return { courses: [] };
 		}
 
 		default:

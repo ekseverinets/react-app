@@ -1,8 +1,7 @@
 export interface IUser {
-	isAuth: boolean;
-	name: string;
+	name?: string;
 	email: string;
-	token: string;
+	password: string;
 }
 
 export interface ICourse {

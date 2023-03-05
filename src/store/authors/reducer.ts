@@ -1,13 +1,38 @@
-import { MOCKED_AUTHORS_LIST } from '../../constants';
-import { ADD_AUTHOR } from './types';
+import { AuthorActionTypes, AuthorsAction } from './types';
+import { IAuthor } from '../../models';
 
-const authorsInitialState = MOCKED_AUTHORS_LIST;
+export interface IAuthorsInitialState {
+	authors: IAuthor[];
+}
 
-export const authorsReducer = (state = authorsInitialState, action) => {
+const authorsInitialState = {
+	authors: [],
+};
+
+export const authorsReducer = (
+	state: IAuthorsInitialState = authorsInitialState,
+	action: AuthorsAction
+): IAuthorsInitialState => {
 	switch (action.type) {
-		case ADD_AUTHOR:
-			return [...state, action.payload];
+		case AuthorActionTypes.FETCH_AUTHORS:
+			return {
+				authors: action.payload,
+			};
 
+		case AuthorActionTypes.FETCH_AUTHORS_ERROR:
+			return { authors: [] };
+
+		// case AuthorActionTypes.ADD_AUTHOR:
+		// 	return { authors: [] };
+
+		// case AuthorActionTypes.DELETE_AUTHOR: {
+		// 	const deletedAutorId = state.authors.findIndex(
+		// 		({ id }) => id === action.payload
+		// 	);
+		// 	const authors = [...state.authors];
+		// 	authors.splice(deletedAutorId, 1);
+		// 	return { authors };
+		// }
 		default:
 			return state;
 	}

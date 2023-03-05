@@ -18,21 +18,23 @@ export const fetchCourses = () => async (dispatch: AppDispatch) => {
 	}
 };
 
-export const addCourseAction =
+export const addCourse =
 	(anotherCourse: ICourseCard) => async (dispatch: AppDispatch) => {
 		try {
-			const currentUser = localStorage.getItem('token');
+			const token = localStorage.getItem('token');
 
 			await apiClient.post('/courses/add', anotherCourse, {
 				headers: {
 					'Content-Type': 'application/json',
-					Authorization: `${currentUser}`,
+					Authorization: `${token}`,
 				},
 			});
 
+			const coursesResponse = await apiClient.get('/courses/all');
+
 			dispatch({
-				type: CourseActionTypes.ADD_COURSE,
-				payload: anotherCourse,
+				type: CourseActionTypes.FETCH_COURSES,
+				payload: coursesResponse.data.result,
 			});
 		} catch (error) {
 			const [errorMessage] = error.response.data.errors;
@@ -44,7 +46,29 @@ export const addCourseAction =
 		}
 	};
 
-export const deleteCourseAction = (payload: { id: string }) => ({
-	type: CourseActionTypes.DELETE_COURSE,
-	payload,
-});
+export const deleteCourse = (id: string) => async (dispatch: AppDispatch) => {
+	try {
+		const token = localStorage.getItem('token');
+
+		await apiClient.delete(`/courses/${id}`, {
+			headers: {
+				'Content-Type': 'application/json',
+				Authorization: `${token}`,
+			},
+		});
+
+		const coursesResponse = await apiClient.get('/courses/all');
+
+		dispatch({
+			type: CourseActionTypes.FETCH_COURSES,
+			payload: coursesResponse.data.result,
+		});
+	} catch (error) {
+		const [errorMessage] = error.response.data.errors;
+
+		dispatch({
+			type: CourseActionTypes.FETCH_COURSES_ERROR,
+			payload: `${errorMessage}`,
+		});
+	}
+};

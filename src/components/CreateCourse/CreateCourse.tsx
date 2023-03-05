@@ -1,10 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getAuthors } from '../../store/authors/selectors';
-import { addAuthorAction } from '../../store/authors/actions';
-import { addCourseAction } from '../../store/courses/actions';
+import { addCourse } from '../../store/courses/actions';
 
 import { IAuthor } from '../../models';
 import { IPaths } from '../../constants';
@@ -15,6 +14,7 @@ import { CreateAuthorForm } from './components/CreateAuthorForm/CreateAuthorForm
 import { Button } from 'src/common/Button/Button';
 
 import styles from './CreateCourse.module.css';
+import { addAuthor, fetchAuthors } from 'src/store/authors/actions';
 
 const CreateCourse = () => {
 	const dispatch = useAppDispatch();
@@ -41,7 +41,12 @@ const CreateCourse = () => {
 		},
 	});
 
-	const authors = useAppSelector(getAuthors);
+	const { authors } = useAppSelector(getAuthors);
+
+	useEffect(() => {
+		dispatch(fetchAuthors());
+	}, []);
+
 	const [courseAuthors, setCourseAuthors] = useState<IAuthor[]>([]);
 
 	const onInputChange = useCallback((value: string, name: string) => {
@@ -96,8 +101,8 @@ const CreateCourse = () => {
 
 		console.log(requestCourseBody.authors);
 
-		dispatch(addCourseAction(requestCourseBody));
-		//navigate(IPaths.Courses);
+		dispatch(addCourse(requestCourseBody));
+		navigate(IPaths.Courses);
 	};
 
 	const handleAddAuthor = (name: string) => {
@@ -106,7 +111,7 @@ const CreateCourse = () => {
 			name,
 		};
 
-		dispatch(addAuthorAction(newAuthor));
+		dispatch(addAuthor(newAuthor));
 	};
 
 	return (

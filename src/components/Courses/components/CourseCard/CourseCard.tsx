@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '../../../../store/hooks';
-import { getCourseDuration, getCreationDate } from '../../../../helpers';
-import { deleteCourseAction } from '../../../../store/courses/actions';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { getAuthors } from '../../../../store/authors/selectors';
+import {
+	getCourseAuthor,
+	getCourseDuration,
+	getCreationDate,
+} from '../../../../helpers';
+import { deleteCourse } from '../../../../store/courses/actions';
 
 import { Button } from '../../../../common/Button/Button';
 
 import styles from './CourseCard.module.css';
+import { fetchAuthors } from 'src/store/authors/actions';
 
 export const CourseCard = ({
 	id,
@@ -17,11 +23,13 @@ export const CourseCard = ({
 	creationDate,
 	authors,
 }) => {
+	const updatedAuthors = useAppSelector(getAuthors);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
-	// const authors = useAppSelector(getAuthors);
-	console.log(authors);
+	useEffect(() => {
+		dispatch(fetchAuthors());
+	}, []);
 
 	return (
 		<li className={styles.card}>
@@ -31,7 +39,8 @@ export const CourseCard = ({
 			</div>
 			<div className={styles.details}>
 				<p>
-					{/* <span>Authors:</span> {getCourseAuthor(authors, updatedAuthors)} */}
+					<span>Authors:</span>{' '}
+					{getCourseAuthor(authors, updatedAuthors.authors)}
 				</p>
 				<p>
 					<span>Duration:</span> {getCourseDuration(duration)}
@@ -41,10 +50,7 @@ export const CourseCard = ({
 				</p>
 				<Button text='Show course' onClick={() => navigate(`${id}`)} />
 				<div className={styles.btnsWrap}>
-					<Button
-						text='Delete'
-						onClick={() => dispatch(deleteCourseAction({ id }))}
-					/>
+					<Button text='Delete' onClick={() => dispatch(deleteCourse(id))} />
 					<Button
 						text='Update'
 						onClick={() => alert('I will be added in the next module')}

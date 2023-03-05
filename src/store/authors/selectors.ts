@@ -1,1 +1,3 @@
-export const getAuthors = (state) => state.authors;
+import { RootState } from '../index';
+
+export const getAuthors = (state: RootState) => state.authors;

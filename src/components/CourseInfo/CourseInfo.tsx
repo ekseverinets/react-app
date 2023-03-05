@@ -5,7 +5,7 @@ import { useAppSelector } from '../../store/hooks';
 import { getCourses } from '../../store/courses/selectors';
 import { getAuthors } from '../../store/authors/selectors';
 
-import { IPaths } from 'src/constants';
+import { IPaths } from '../../constants';
 import {
 	getCourseAuthor,
 	getCourseDuration,
@@ -46,7 +46,8 @@ const CourseInfo = () => {
 						<span>Created:</span> {getCreationDate(course.creationDate)}
 					</p>
 					<p>
-						<span>Authors:</span> {getCourseAuthor(course.authors, authors)}
+						<span>Authors:</span>{' '}
+						{getCourseAuthor(course.authors, authors.authors)}
 					</p>
 				</div>
 			</article>

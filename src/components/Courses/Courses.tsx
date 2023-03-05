@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getCourses } from '../../store/courses/selectors';
-import { fetchCourses } from 'src/store/courses/actions';
+import { fetchCourses } from '../../store/courses/actions';
 
 import { IPaths } from 'src/constants';
 import { CourseCard } from './components/CourseCard/CourseCard';
