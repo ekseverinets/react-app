@@ -12,7 +12,7 @@ import { Button } from 'src/common/Button/Button';
 import styles from './Header.module.css';
 
 const Header = () => {
-	const { result } = useAppSelector(getUser);
+	const { result, successful } = useAppSelector(getUser);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -30,13 +30,13 @@ const Header = () => {
 
 	return (
 		<header className={styles.header}>
-			<Logo auth={result.successful} />
-			{result.successful ? (
+			<Logo auth={successful} />
+			{successful ? (
 				<div className={styles.authInfo}>
 					<span>
-						{typeof result.result === 'object'
-							? result.result.role === 'user'
-								? result.result.name
+						{typeof result === 'object'
+							? result.role === 'user'
+								? result.name
 								: 'admin'
 							: ''}
 					</span>

@@ -10,7 +10,6 @@ export const fetchUser = (authToken: string) => {
 			const response = await apiClient.get('/users/me', {
 				headers: { Authorization: authToken },
 			});
-			console.log(response.data);
 
 			dispatch({
 				type: UserActionTypes.FETCH_USER,
@@ -28,7 +27,6 @@ export const registerUser = (
 	return async (dispatch: AppDispatch) => {
 		try {
 			const response = await apiClient.post(`/register`, userToRegister);
-			console.log(response.data);
 
 			dispatch({
 				type: UserActionTypes.REGISTER_USER,
@@ -81,7 +79,10 @@ export const logoutUser = () => {
 				headers: { Authorization: `${token}` },
 			});
 		} catch (error) {
-			console.log(`${error}`);
+			dispatch({
+				type: UserActionTypes.LOGOUT_USER_ERROR,
+				payload: `${error}`,
+			});
 		}
 	};
 };

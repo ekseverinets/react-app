@@ -23,11 +23,16 @@ export const addCourse =
 		try {
 			const token = localStorage.getItem('token');
 
-			await apiClient.post('/courses/add', anotherCourse, {
+			const response = await apiClient.post('/courses/add', anotherCourse, {
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `${token}`,
 				},
+			});
+
+			dispatch({
+				type: CourseActionTypes.ADD_COURSE,
+				payload: response.data.result,
 			});
 
 			const coursesResponse = await apiClient.get('/courses/all');
@@ -50,11 +55,16 @@ export const deleteCourse = (id: string) => async (dispatch: AppDispatch) => {
 	try {
 		const token = localStorage.getItem('token');
 
-		await apiClient.delete(`/courses/${id}`, {
+		const response = await apiClient.delete(`/courses/${id}`, {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `${token}`,
 			},
+		});
+
+		dispatch({
+			type: CourseActionTypes.DELETE_COURSE,
+			payload: response.data.result,
 		});
 
 		const coursesResponse = await apiClient.get('/courses/all');

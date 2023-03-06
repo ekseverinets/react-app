@@ -4,6 +4,7 @@ export enum UserActionTypes {
 	REGISTER_USER = 'REGISTER_USER',
 	REGISTER_USER_ERROR = 'REGISTER_USER_ERROR',
 	LOGOUT_USER = 'LOGOUT_USER',
+	LOGOUT_USER_ERROR = 'LOGOUT_USER_ERROR',
 }
 
 export interface IUser {
@@ -44,9 +45,15 @@ interface ILogoutUser {
 	type: UserActionTypes.LOGOUT_USER;
 }
 
+interface ILogoutUserError {
+	type: UserActionTypes.LOGOUT_USER_ERROR;
+	payload: string;
+}
+
 export type UserAction =
 	| IFetchUser
 	| IFetchUserError
 	| IRegisterUser
 	| IRegisterUserError
-	| ILogoutUser;
+	| ILogoutUser
+	| ILogoutUserError;

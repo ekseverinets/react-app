@@ -30,10 +30,13 @@ export const addAuthor =
 					Authorization: `${token}`,
 				},
 			});
-			console.log(response.data);
+
+			dispatch({
+				type: AuthorActionTypes.ADD_AUTHOR,
+				payload: response.data.result,
+			});
 
 			const authorsResponse = await apiClient.get('authors/all');
-			console.log(response.data);
 
 			dispatch({
 				type: AuthorActionTypes.FETCH_AUTHORS,
@@ -53,16 +56,19 @@ export const deleteAuthor = (id: string) => async (dispatch: AppDispatch) => {
 	try {
 		const token = localStorage.getItem('token');
 
-		const response = await apiClient.post(`/authors/delete/${id}`, {
+		const response = await apiClient.delete(`/authors/${id}`, {
 			headers: {
 				'Content-Type': 'application/json',
 				Authorization: `${token}`,
 			},
 		});
-		console.log(response.data);
+
+		dispatch({
+			type: AuthorActionTypes.DELETE_AUTHOR,
+			payload: response.data.result,
+		});
 
 		const authorsResponse = await apiClient.get('authors/all');
-		console.log(response.data);
 
 		dispatch({
 			type: AuthorActionTypes.FETCH_AUTHORS,

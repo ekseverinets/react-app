@@ -22,17 +22,12 @@ export const authorsReducer = (
 		case AuthorActionTypes.FETCH_AUTHORS_ERROR:
 			return { authors: [] };
 
-		// case AuthorActionTypes.ADD_AUTHOR:
-		// 	return { authors: [] };
+		case AuthorActionTypes.ADD_AUTHOR:
+			return { authors: [] };
 
-		// case AuthorActionTypes.DELETE_AUTHOR: {
-		// 	const deletedAutorId = state.authors.findIndex(
-		// 		({ id }) => id === action.payload
-		// 	);
-		// 	const authors = [...state.authors];
-		// 	authors.splice(deletedAutorId, 1);
-		// 	return { authors };
-		// }
+		case AuthorActionTypes.DELETE_AUTHOR: {
+			return { authors: [] };
+		}
 		default:
 			return state;
 	}

@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getAuthors } from '../../store/authors/selectors';
 import { addCourse } from '../../store/courses/actions';
+import {
+	addAuthor,
+	deleteAuthor,
+	fetchAuthors,
+} from '../../store/authors/actions';
 
 import { IAuthor } from '../../models';
 import { IPaths } from '../../constants';
@@ -11,10 +16,9 @@ import { getCourseDuration, UUID } from '../../helpers';
 import InputField from '../../common/InputField/InputField';
 import { AuthorItem } from './components/AuthorItem/AuthorItem';
 import { CreateAuthorForm } from './components/CreateAuthorForm/CreateAuthorForm';
-import { Button } from 'src/common/Button/Button';
+import { Button } from '../../common/Button/Button';
 
 import styles from './CreateCourse.module.css';
-import { addAuthor, fetchAuthors } from 'src/store/authors/actions';
 
 const CreateCourse = () => {
 	const dispatch = useAppDispatch();
@@ -99,8 +103,6 @@ const CreateCourse = () => {
 			authors: courseAuthors.map((item) => item.id),
 		};
 
-		console.log(requestCourseBody.authors);
-
 		dispatch(addCourse(requestCourseBody));
 		navigate(IPaths.Courses);
 	};
@@ -169,7 +171,8 @@ const CreateCourse = () => {
 					<div>
 						<div>
 							<h2>Authors</h2>
-							<ul>
+							<ul className={styles.newCourseAuthors}>
+								{authors.length === 0 && 'Authors list is empty'}
 								{authors
 									.filter((author) => !new Set(courseAuthors).has(author))
 									.map((author) => (
@@ -184,6 +187,10 @@ const CreateCourse = () => {
 												}}
 												btnText='Add author'
 											/>
+											<Button
+												text='Delete'
+												onClick={() => dispatch(deleteAuthor(author.id))}
+											/>
 										</li>
 									))}
 							</ul>
@@ -191,7 +198,7 @@ const CreateCourse = () => {
 						<div>
 							<h2>Course Authors</h2>
 							<ul>
-								{courseAuthors.length === 0 && 'Author list is empty'}
+								{courseAuthors.length === 0 && 'Course authors list is empty'}
 								{courseAuthors.map((courseAuthor) => (
 									<li key={courseAuthor.id}>
 										<AuthorItem

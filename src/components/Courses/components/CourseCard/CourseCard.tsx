@@ -3,17 +3,17 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { getAuthors } from '../../../../store/authors/selectors';
+import { deleteCourse } from '../../../../store/courses/actions';
+import { fetchAuthors } from '../../../../store/authors/actions';
 import {
 	getCourseAuthor,
 	getCourseDuration,
 	getCreationDate,
 } from '../../../../helpers';
-import { deleteCourse } from '../../../../store/courses/actions';
 
 import { Button } from '../../../../common/Button/Button';
 
 import styles from './CourseCard.module.css';
-import { fetchAuthors } from 'src/store/authors/actions';
 
 export const CourseCard = ({
 	id,
