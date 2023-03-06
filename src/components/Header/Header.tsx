@@ -31,13 +31,13 @@ const Header = () => {
 	return (
 		<header className={styles.header}>
 			<Logo auth={successful} />
-			{successful ? (
+			{successful && token !== null ? (
 				<div className={styles.authInfo}>
 					<span>
 						{typeof result === 'object'
 							? result.role === 'user'
 								? result.name
-								: 'admin'
+								: 'Admin'
 							: ''}
 					</span>
 					<Button text='Logout' onClick={handleLogout} />
