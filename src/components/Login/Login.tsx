@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useAppDispatch } from '../../store/hooks';
-import { loginUser } from 'src/store/user/actions';
+import { loginUser } from '../../store/user/actions';
 
 import { IPaths } from 'src/constants';
 import InputField from '../../common/InputField/InputField';
@@ -28,8 +28,6 @@ const LoginForm = () => {
 			errorMsg: '',
 		},
 	});
-
-	const [hasAuthError, setAuthError] = useState(false);
 
 	useEffect(() => {
 		if (localStorage.getItem('token')) {
@@ -80,12 +78,7 @@ const LoginForm = () => {
 				password: values.password,
 			};
 
-			const loginSuccessful = await dispatch(loginUser(user));
-			if (loginSuccessful) {
-				navigate(IPaths.Courses);
-			} else {
-				setAuthError(true);
-			}
+			dispatch(loginUser(user, () => navigate(IPaths.Courses)));
 		}
 	};
 
@@ -120,11 +113,11 @@ const LoginForm = () => {
 				</button>
 			</form>
 
-			{hasAuthError && (
+			{/* {!successful && (
 				<div className={styles.formError}>
 					<span>Authentication error! Please try again</span>
 				</div>
-			)}
+			)} */}
 
 			<div className={styles.formLink}>
 				If you not have an account you can{' '}

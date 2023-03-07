@@ -1,8 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '../../store/hooks';
-import { registerUser } from 'src/store/user/actions';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getUser } from '../../store/user/selectors';
+import { registerUser } from '../../store/user/actions';
 
 import { IPaths } from 'src/constants';
 import InputField from '../../common/InputField/InputField';
@@ -10,6 +11,7 @@ import InputField from '../../common/InputField/InputField';
 import styles from './Registration.module.css';
 
 const RegistrationForm = () => {
+	const { registerError } = useAppSelector(getUser);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -33,8 +35,6 @@ const RegistrationForm = () => {
 			errorMsg: '',
 		},
 	});
-
-	const [hasRegistrationError, setRegistrationError] = useState(false);
 
 	const handleInputChange = useCallback((value, name) => {
 		setValues((prevState) => ({
@@ -80,12 +80,7 @@ const RegistrationForm = () => {
 				password: values.password,
 			};
 
-			const registrationSuccessful = await dispatch(registerUser(newUser));
-			if (registrationSuccessful) {
-				navigate(IPaths.Login);
-			} else {
-				setRegistrationError(true);
-			}
+			dispatch(registerUser(newUser, () => navigate(IPaths.Login)));
 		}
 	};
 
@@ -134,7 +129,7 @@ const RegistrationForm = () => {
 				</button>
 			</form>
 
-			{hasRegistrationError && (
+			{registerError && (
 				<div className={styles.formError}>
 					<span>Mayby your email already exists! Try login</span>
 				</div>

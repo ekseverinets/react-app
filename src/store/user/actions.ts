@@ -1,11 +1,10 @@
-import { UserAction, UserActionTypes } from './types';
+import { UserActionTypes } from './types';
 import apiClient from '../../services';
-import { AppDispatch, RootState } from '../index';
-import { ThunkAction } from 'redux-thunk';
+import { AppDispatch } from '../index';
 import { IUser } from '../../models';
 
-export const fetchUser = (authToken: string) => {
-	return async (dispatch: AppDispatch) => {
+export const fetchUser =
+	(authToken: string) => async (dispatch: AppDispatch) => {
 		try {
 			const response = await apiClient.get('/users/me', {
 				headers: { Authorization: authToken },
@@ -19,12 +18,10 @@ export const fetchUser = (authToken: string) => {
 			dispatch({ type: UserActionTypes.FETCH_USER_ERROR, payload: `${error}` });
 		}
 	};
-};
 
-export const registerUser = (
-	userToRegister: IUser
-): ThunkAction<Promise<boolean>, RootState, undefined, UserAction> => {
-	return async (dispatch: AppDispatch) => {
+export const registerUser =
+	(userToRegister: IUser, callBack?: () => void) =>
+	async (dispatch: AppDispatch) => {
 		try {
 			const response = await apiClient.post(`/register`, userToRegister);
 
@@ -32,21 +29,21 @@ export const registerUser = (
 				type: UserActionTypes.REGISTER_USER,
 				payload: response.data.result,
 			});
-			return true;
+
+			if (callBack) {
+				callBack();
+			}
 		} catch (error) {
 			dispatch({
 				type: UserActionTypes.REGISTER_USER_ERROR,
 				payload: `${error}`,
 			});
-			return false;
 		}
 	};
-};
 
-export const loginUser = (
-	userToLogin: IUser
-): ThunkAction<Promise<boolean>, RootState, undefined, UserAction> => {
-	return async (dispatch: AppDispatch) => {
+export const loginUser =
+	(userToLogin: IUser, callBack?: () => void) =>
+	async (dispatch: AppDispatch) => {
 		try {
 			const response = await apiClient.post(`/login`, userToLogin);
 			localStorage.setItem('token', response.data.result);
@@ -59,30 +56,29 @@ export const loginUser = (
 				type: UserActionTypes.FETCH_USER,
 				payload: userResponse.data,
 			});
-			return true;
+
+			if (callBack) {
+				callBack();
+			}
 		} catch (error) {
 			dispatch({
 				type: UserActionTypes.FETCH_USER_ERROR,
 				payload: `${error}`,
 			});
-			return false;
 		}
 	};
-};
 
-export const logoutUser = () => {
-	return async (dispatch: AppDispatch) => {
-		try {
-			const token = localStorage.getItem('token');
-			dispatch({ type: UserActionTypes.LOGOUT_USER });
-			await apiClient.delete('/logout', {
-				headers: { Authorization: `${token}` },
-			});
-		} catch (error) {
-			dispatch({
-				type: UserActionTypes.LOGOUT_USER_ERROR,
-				payload: `${error}`,
-			});
-		}
-	};
+export const logoutUser = () => async (dispatch: AppDispatch) => {
+	try {
+		const token = localStorage.getItem('token');
+		dispatch({ type: UserActionTypes.LOGOUT_USER });
+		await apiClient.delete('/logout', {
+			headers: { Authorization: `${token}` },
+		});
+	} catch (error) {
+		dispatch({
+			type: UserActionTypes.LOGOUT_USER_ERROR,
+			payload: `${error}`,
+		});
+	}
 };

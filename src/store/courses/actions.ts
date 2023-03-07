@@ -42,11 +42,9 @@ export const addCourse =
 				payload: coursesResponse.data.result,
 			});
 		} catch (error) {
-			const [errorMessage] = error.response.data.errors;
-
 			dispatch({
 				type: CourseActionTypes.FETCH_COURSES_ERROR,
-				payload: `${errorMessage}`,
+				payload: `${error}`,
 			});
 		}
 	};
@@ -74,11 +72,9 @@ export const deleteCourse = (id: string) => async (dispatch: AppDispatch) => {
 			payload: coursesResponse.data.result,
 		});
 	} catch (error) {
-		const [errorMessage] = error.response.data.errors;
-
 		dispatch({
 			type: CourseActionTypes.FETCH_COURSES_ERROR,
-			payload: `${errorMessage}`,
+			payload: `${error}`,
 		});
 	}
 };

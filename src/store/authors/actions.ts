@@ -43,11 +43,9 @@ export const addAuthor =
 				payload: authorsResponse.data.result,
 			});
 		} catch (error) {
-			const [errorMessage] = error.response.data.errors;
-
 			dispatch({
 				type: AuthorActionTypes.FETCH_AUTHORS_ERROR,
-				payload: `${errorMessage}`,
+				payload: `${error}`,
 			});
 		}
 	};
@@ -75,11 +73,9 @@ export const deleteAuthor = (id: string) => async (dispatch: AppDispatch) => {
 			payload: authorsResponse.data.result,
 		});
 	} catch (error) {
-		const [errorMessage] = error.response.data.errors;
-
 		dispatch({
 			type: AuthorActionTypes.FETCH_AUTHORS_ERROR,
-			payload: `${errorMessage}`,
+			payload: `${error}`,
 		});
 	}
 };
