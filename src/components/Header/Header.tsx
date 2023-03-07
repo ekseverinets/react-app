@@ -1,33 +1,45 @@
-import React, { FC } from 'react';
+import React, { useEffect } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
-import { IUser } from '../../models';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { fetchUser, logoutUser } from '../../store/user/actions';
+import { getUser } from 'src/store/user/selectors';
+
 import { IPaths } from '../../constants';
 import { Logo } from './components/Logo/Logo';
 import { Button } from 'src/common/Button/Button';
 
 import styles from './Header.module.css';
 
-export interface IHeader {
-	userData: IUser;
-	handleSetUser: (isAuth: boolean, user: string) => void;
-}
-
-const Header: FC<IHeader> = ({ userData, handleSetUser }) => {
+const Header = () => {
+	const { result, successful } = useAppSelector(getUser);
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
+	const token = localStorage.getItem('token');
+
+	useEffect(() => {
+		dispatch(fetchUser(token));
+	}, []);
+
 	const handleLogout = () => {
+		dispatch(logoutUser());
 		localStorage.clear();
 		navigate(IPaths.Login);
-		handleSetUser(false, '');
 	};
 
 	return (
 		<header className={styles.header}>
-			<Logo auth={userData.isAuth} />
-			{userData.isAuth ? (
+			<Logo auth={successful} />
+			{successful && token !== null ? (
 				<div className={styles.authInfo}>
-					<span>{userData.name}</span>
+					<span>
+						{typeof result === 'object'
+							? result.role === 'user'
+								? result.name
+								: 'Admin'
+							: ''}
+					</span>
 					<Button text='Logout' onClick={handleLogout} />
 				</div>
 			) : (

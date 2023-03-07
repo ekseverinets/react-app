@@ -14,7 +14,7 @@ section button {
 
 section button:hover,
 section button:active {
-  background: #25626c;
+  background-color: #25626c;
   border: 1px solid #25626c;
   color: #fff;
 }

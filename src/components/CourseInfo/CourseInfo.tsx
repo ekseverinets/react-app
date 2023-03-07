@@ -1,8 +1,11 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { useNavigate, Navigate, useParams } from 'react-router-dom';
 
-import { ICourse, IAuthor } from '../../models';
-import { IPaths } from 'src/constants';
+import { useAppSelector } from '../../store/hooks';
+import { getCourses } from '../../store/courses/selectors';
+import { getAuthors } from '../../store/authors/selectors';
+
+import { IPaths } from '../../constants';
 import {
 	getCourseAuthor,
 	getCourseDuration,
@@ -12,16 +15,13 @@ import { Button } from 'src/common/Button/Button';
 
 import styles from './CourseInfo.module.css';
 
-interface CourseInfoProps {
-	courses: ICourse[];
-	updatedAuthors: IAuthor[];
-}
-
-const CourseInfo: FC<CourseInfoProps> = ({ courses, updatedAuthors }) => {
+const CourseInfo = () => {
+	const courses = useAppSelector(getCourses);
+	const authors = useAppSelector(getAuthors);
 	const navigate = useNavigate();
 	const { courseId } = useParams();
 
-	const course = courses.find(({ id }) => id === courseId);
+	const course = courses.courses.find(({ id }) => id === courseId);
 
 	if (!course) {
 		return <Navigate to={IPaths.Courses} />;
@@ -47,7 +47,7 @@ const CourseInfo: FC<CourseInfoProps> = ({ courses, updatedAuthors }) => {
 					</p>
 					<p>
 						<span>Authors:</span>{' '}
-						{getCourseAuthor(course.authors, updatedAuthors)}
+						{getCourseAuthor(course.authors, authors.authors)}
 					</p>
 				</div>
 			</article>

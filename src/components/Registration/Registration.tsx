@@ -1,12 +1,18 @@
 import React, { useState, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { getUser } from '../../store/user/selectors';
+import { registerUser } from '../../store/user/actions';
+
 import { IPaths } from 'src/constants';
 import InputField from '../../common/InputField/InputField';
 
 import styles from './Registration.module.css';
 
 const RegistrationForm = () => {
+	const { registerError } = useAppSelector(getUser);
+	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
 	const [values, setValues] = useState({
@@ -74,21 +80,7 @@ const RegistrationForm = () => {
 				password: values.password,
 			};
 
-			const response = await fetch('http://localhost:4000/register', {
-				method: 'POST',
-				body: JSON.stringify(newUser),
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
-
-			const result = await response.json();
-
-			if (result.successful) {
-				navigate(IPaths.Login);
-			} else {
-				console.error('Mayby your email already exists! Try login:)');
-			}
+			dispatch(registerUser(newUser, () => navigate(IPaths.Login)));
 		}
 	};
 
@@ -136,6 +128,13 @@ const RegistrationForm = () => {
 					Registration
 				</button>
 			</form>
+
+			{registerError && (
+				<div className={styles.formError}>
+					<span>Mayby your email already exists! Try login</span>
+				</div>
+			)}
+
 			<div className={styles.formLink}>
 				If you have an account you can <Link to={IPaths.Login}> Login</Link>
 			</div>
