@@ -5,7 +5,7 @@ import { useAppSelector } from '../../store/hooks';
 import { getCourses } from '../../store/courses/selectors';
 import { getAuthors } from '../../store/authors/selectors';
 
-import { IPaths } from '../../constants';
+import { IPaths } from '../../constants/constants';
 import {
 	getCourseAuthor,
 	getCourseDuration,

@@ -1,15 +1,17 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { loginUser } from '../../store/user/actions';
+import { getUser } from '../../store/user/selectors';
 
-import { IPaths } from 'src/constants';
+import { IPaths } from '../../constants/constants';
 import InputField from '../../common/InputField/InputField';
 
 import styles from './Login.module.css';
 
 const LoginForm = () => {
+	const { error: fetchUserError } = useAppSelector(getUser);
 	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 
@@ -113,11 +115,11 @@ const LoginForm = () => {
 				</button>
 			</form>
 
-			{/* {!successful && (
+			{fetchUserError && (
 				<div className={styles.formError}>
-					<span>Authentication error! Please try again</span>
+					<span>{fetchUserError}</span>
 				</div>
-			)} */}
+			)}
 
 			<div className={styles.formLink}>
 				If you not have an account you can{' '}

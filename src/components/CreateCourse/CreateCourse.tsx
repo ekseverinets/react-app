@@ -11,7 +11,7 @@ import {
 } from '../../store/authors/actions';
 
 import { IAuthor } from '../../models';
-import { IPaths } from '../../constants';
+import { IPaths } from '../../constants/constants';
 import { getCourseDuration, UUID } from '../../helpers';
 import InputField from '../../common/InputField/InputField';
 import { AuthorItem } from './components/AuthorItem/AuthorItem';

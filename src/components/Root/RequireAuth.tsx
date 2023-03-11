@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { IPaths } from 'src/constants';
+import { IPaths } from '../../constants/constants';
 
 interface AuthProps {
 	children: JSX.Element;

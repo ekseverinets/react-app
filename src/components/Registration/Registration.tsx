@@ -5,13 +5,13 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getUser } from '../../store/user/selectors';
 import { registerUser } from '../../store/user/actions';
 
-import { IPaths } from 'src/constants';
+import { IPaths } from '../../constants/constants';
 import InputField from '../../common/InputField/InputField';
 
 import styles from './Registration.module.css';
 
 const RegistrationForm = () => {
-	const { registerError } = useAppSelector(getUser);
+	const { error: registerError } = useAppSelector(getUser);
 	const dispatch = useAppDispatch();
 	const navigate = useNavigate();
 
@@ -131,7 +131,7 @@ const RegistrationForm = () => {
 
 			{registerError && (
 				<div className={styles.formError}>
-					<span>Mayby your email already exists! Try login</span>
+					<span>{registerError}</span>
 				</div>
 			)}
 
