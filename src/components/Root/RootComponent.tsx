@@ -7,7 +7,7 @@ import {
 	useLocation,
 } from 'react-router-dom';
 
-import { IPaths } from '../../constants';
+import { IPaths } from '../../constants/constants';
 
 import { RequireAuth } from './RequireAuth';
 import App from '../../App';

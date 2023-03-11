@@ -2,14 +2,12 @@ import { IUser, UserAction, UserActionTypes } from './types';
 
 export interface IUserInitialState {
 	result: IUser | string;
-	successful: boolean;
-	registerError: boolean;
+	error: null | string;
 }
 
 const userInitialState = {
 	result: '',
-	successful: false,
-	registerError: false,
+	error: null,
 };
 
 export const userReducer = (
@@ -20,38 +18,32 @@ export const userReducer = (
 		case UserActionTypes.FETCH_USER:
 			return {
 				result: action.payload.result,
-				successful: action.payload.successful,
-				registerError: false,
+				error: null,
 			};
 		case UserActionTypes.FETCH_USER_ERROR:
 			return {
 				result: '',
-				successful: false,
-				registerError: false,
+				error: action.payload,
 			};
 		case UserActionTypes.REGISTER_USER:
 			return {
 				result: action.payload.result,
-				successful: action.payload.successful,
-				registerError: false,
+				error: null,
 			};
 		case UserActionTypes.REGISTER_USER_ERROR:
 			return {
 				result: '',
-				successful: false,
-				registerError: true,
+				error: action.payload,
 			};
 		case UserActionTypes.LOGOUT_USER:
 			return {
 				result: '',
-				successful: true,
-				registerError: false,
+				error: null,
 			};
 		case UserActionTypes.LOGOUT_USER_ERROR:
 			return {
 				result: '',
-				successful: false,
-				registerError: false,
+				error: action.payload,
 			};
 		default:
 			return state;

@@ -1,11 +1,13 @@
 import { AuthorActionTypes } from './types';
-import apiClient from '../../services';
+import { apiClient } from '../../services';
 import { AppDispatch } from '../index';
 import { IAuthor } from '../../models';
+import { IUrls } from '../../constants/api';
+import { getToken } from '../../constants/constants';
 
 export const fetchAuthors = () => async (dispatch: AppDispatch) => {
 	try {
-		const response = await apiClient.get('/authors/all');
+		const response = await apiClient.get(IUrls.get_authors_URL);
 
 		dispatch({
 			type: AuthorActionTypes.FETCH_AUTHORS,
@@ -22,12 +24,9 @@ export const fetchAuthors = () => async (dispatch: AppDispatch) => {
 export const addAuthor =
 	(newAuthor: IAuthor) => async (dispatch: AppDispatch) => {
 		try {
-			const token = localStorage.getItem('token');
-
-			const response = await apiClient.post('/authors/add', newAuthor, {
+			const response = await apiClient.post(IUrls.add_author_URL, newAuthor, {
 				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `${token}`,
+					Authorization: getToken(),
 				},
 			});
 
@@ -36,7 +35,7 @@ export const addAuthor =
 				payload: response.data.result,
 			});
 
-			const authorsResponse = await apiClient.get('authors/all');
+			const authorsResponse = await apiClient.get(IUrls.get_authors_URL);
 
 			dispatch({
 				type: AuthorActionTypes.FETCH_AUTHORS,
@@ -52,12 +51,9 @@ export const addAuthor =
 
 export const deleteAuthor = (id: string) => async (dispatch: AppDispatch) => {
 	try {
-		const token = localStorage.getItem('token');
-
 		const response = await apiClient.delete(`/authors/${id}`, {
 			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `${token}`,
+				Authorization: getToken(),
 			},
 		});
 
@@ -66,7 +62,7 @@ export const deleteAuthor = (id: string) => async (dispatch: AppDispatch) => {
 			payload: response.data.result,
 		});
 
-		const authorsResponse = await apiClient.get('authors/all');
+		const authorsResponse = await apiClient.get(IUrls.get_authors_URL);
 
 		dispatch({
 			type: AuthorActionTypes.FETCH_AUTHORS,

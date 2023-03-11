@@ -1,19 +1,15 @@
-import React, { FC } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { IPaths } from 'src/constants';
+import { IPaths } from '../../../../constants/constants';
 
 import logo from '../../../../assets/logo.png';
 
 import styles from './Logo.module.css';
 
-interface LogoProps {
-	auth: boolean;
-}
-
-export const Logo: FC<LogoProps> = (auth) => {
+export const Logo = () => {
 	return (
-		<Link to={auth ? IPaths.Courses : IPaths.Login}>
+		<Link to={IPaths.Courses}>
 			<div className={styles.logo}>
 				<img src={logo} alt='Logo' />
 			</div>

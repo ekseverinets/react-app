@@ -1,10 +1,12 @@
 import { CourseActionTypes, ICourseCard } from './types';
-import apiClient from '../../services';
+import { apiClient } from '../../services';
 import { AppDispatch } from '../index';
+import { IUrls } from '../../constants/api';
+import { getToken } from '../../constants/constants';
 
 export const fetchCourses = () => async (dispatch: AppDispatch) => {
 	try {
-		const response = await apiClient.get('/courses/all');
+		const response = await apiClient.get(IUrls.get_courses_URL);
 
 		dispatch({
 			type: CourseActionTypes.FETCH_COURSES,
@@ -21,21 +23,22 @@ export const fetchCourses = () => async (dispatch: AppDispatch) => {
 export const addCourse =
 	(anotherCourse: ICourseCard) => async (dispatch: AppDispatch) => {
 		try {
-			const token = localStorage.getItem('token');
-
-			const response = await apiClient.post('/courses/add', anotherCourse, {
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `${token}`,
-				},
-			});
+			const response = await apiClient.post(
+				IUrls.add_course_URL,
+				anotherCourse,
+				{
+					headers: {
+						Authorization: getToken(),
+					},
+				}
+			);
 
 			dispatch({
 				type: CourseActionTypes.ADD_COURSE,
 				payload: response.data.result,
 			});
 
-			const coursesResponse = await apiClient.get('/courses/all');
+			const coursesResponse = await apiClient.get(IUrls.get_courses_URL);
 
 			dispatch({
 				type: CourseActionTypes.FETCH_COURSES,
@@ -51,12 +54,9 @@ export const addCourse =
 
 export const deleteCourse = (id: string) => async (dispatch: AppDispatch) => {
 	try {
-		const token = localStorage.getItem('token');
-
 		const response = await apiClient.delete(`/courses/${id}`, {
 			headers: {
-				'Content-Type': 'application/json',
-				Authorization: `${token}`,
+				Authorization: getToken(),
 			},
 		});
 
@@ -65,7 +65,7 @@ export const deleteCourse = (id: string) => async (dispatch: AppDispatch) => {
 			payload: response.data.result,
 		});
 
-		const coursesResponse = await apiClient.get('/courses/all');
+		const coursesResponse = await apiClient.get(IUrls.get_courses_URL);
 
 		dispatch({
 			type: CourseActionTypes.FETCH_COURSES,

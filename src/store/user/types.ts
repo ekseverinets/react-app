@@ -19,7 +19,6 @@ interface IFetchUser {
 	type: UserActionTypes.FETCH_USER;
 	payload: {
 		result: IUser;
-		successful: boolean;
 	};
 }
 
@@ -32,7 +31,6 @@ interface IRegisterUser {
 	type: UserActionTypes.REGISTER_USER;
 	payload: {
 		result: string;
-		successful: boolean;
 	};
 }
 
@@ -43,6 +41,7 @@ interface IRegisterUserError {
 
 interface ILogoutUser {
 	type: UserActionTypes.LOGOUT_USER;
+	payload: string;
 }
 
 interface ILogoutUserError {

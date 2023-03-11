@@ -1,13 +1,3 @@
-export enum IPaths {
-	Home = '/',
-	Login = '/login',
-	Registration = '/registration',
-	Courses = '/courses',
-	CoursesAdd = '/courses/add',
-	Course = '/courses/:courseId',
-	NotFound = '*',
-}
-
 export const MOCKED_COURSES_LIST = [
 	{
 		id: 'de5aaa59-90f5-4dbc-b8a9-aaf205c551ba',
